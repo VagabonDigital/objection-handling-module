@@ -1,0 +1,4107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Objection Handling &#8212; Business Communication Module</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap');
+
+    :root {
+      --bg: #F5F4F0;
+      --card: #FFFFFF;
+      --navy: #1C2B4A;
+      --navy-mid: #2E4270;
+      --teal: #2D8F87;
+      --teal-light: #3AACA3;
+      --teal-pale: #E8F5F4;
+      --amber: #C8843A;
+      --amber-light: #FDF3E8;
+      --amber-border: #EAC08C;
+      --muted: #6B7280;
+      --muted-light: #9CA3AF;
+      --border: #E8E6E0;
+      --shadow: 0 2px 16px rgba(28, 43, 74, 0.07);
+      --shadow-md: 0 4px 24px rgba(28, 43, 74, 0.10);
+      --radius: 14px;
+      --radius-sm: 8px;
+      --transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0
+    }
+
+    html {
+      scroll-behavior: smooth
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--navy);
+      min-height: 100vh;
+      line-height: 1.6
+    }
+
+    .top-bar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: #fff;
+      border-bottom: 1px solid var(--border);
+      box-shadow: 0 1px 8px rgba(28, 43, 74, 0.06);
+      padding: 0 32px
+    }
+
+    .top-bar-inner {
+      max-width: 1040px;
+      margin: 0 auto;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      flex-shrink: 0
+    }
+
+    .brand-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 9px;
+      background: var(--navy);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0
+    }
+
+    .brand-name {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--navy);
+      letter-spacing: 0.01em;
+      white-space: nowrap;
+      line-height: 1.2
+    }
+
+    .brand-sub {
+      font-size: 11px;
+      color: var(--muted);
+      font-weight: 400
+    }
+
+    .section-progress {
+      display: flex;
+      align-items: center;
+      flex: 1;
+      justify-content: center;
+      max-width: 560px
+    }
+
+    .sec-step {
+      display: flex;
+      align-items: center;
+      gap: 6px
+    }
+
+    .sec-dot {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 700;
+      border: 2px solid var(--border);
+      background: #fff;
+      color: var(--muted);
+      transition: var(--transition);
+      flex-shrink: 0
+    }
+
+    .sec-step.active .sec-dot {
+      background: var(--navy);
+      border-color: var(--navy);
+      color: #fff
+    }
+
+    .sec-step.done .sec-dot {
+      background: var(--teal);
+      border-color: var(--teal);
+      color: #fff
+    }
+
+    .sec-label {
+      font-size: 11.5px;
+      font-weight: 600;
+      color: var(--muted);
+      white-space: nowrap;
+      letter-spacing: 0.01em;
+      transition: color 0.2s
+    }
+
+    .sec-step.active .sec-label {
+      color: var(--navy);
+      font-weight: 700
+    }
+
+    .sec-step.done .sec-label {
+      color: var(--teal)
+    }
+
+    .sec-connector {
+      width: 22px;
+      height: 1px;
+      background: var(--border);
+      margin: 0 8px;
+      flex-shrink: 0;
+      transition: var(--transition)
+    }
+
+    .sec-connector.done {
+      background: var(--teal)
+    }
+
+    @media(max-width:860px) {
+      .section-progress {
+        display: none
+      }
+    }
+
+    .sec-step.clickable {
+      cursor: pointer
+    }
+
+    .sec-step.clickable:hover .sec-dot {
+      opacity: 0.8
+    }
+
+    .sec-step.clickable:hover .sec-label {
+      color: var(--teal)
+    }
+
+    .bottom-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: #fff;
+      border-top: 1px solid var(--border);
+      box-shadow: 0 -2px 16px rgba(28, 43, 74, 0.08);
+      z-index: 100;
+      height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 32px;
+      transition: transform 0.22s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.22s
+    }
+
+    .bottom-bar.hidden {
+      transform: translateY(100%);
+      opacity: 0;
+      pointer-events: none
+    }
+
+    .bottom-left {
+      display: flex;
+      align-items: center;
+      gap: 12px
+    }
+
+    .bottom-right {
+      display: flex;
+      align-items: center;
+      gap: 14px
+    }
+
+    .page-indicator {
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 500;
+      letter-spacing: 0.02em
+    }
+
+    /* Jump Menu */
+    .btn-jump {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: transparent;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 9px 14px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--muted);
+      cursor: pointer;
+      transition: var(--transition)
+    }
+
+    .btn-jump:hover {
+      border-color: var(--navy);
+      color: var(--navy)
+    }
+
+    .btn-jump.open {
+      border-color: var(--navy);
+      color: var(--navy);
+      background: var(--bg)
+    }
+
+    .jump-panel {
+      position: fixed;
+      bottom: 80px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: min(680px, calc(100vw - 32px));
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: 0 8px 40px rgba(28, 43, 74, 0.16);
+      z-index: 200;
+      display: none;
+      overflow: hidden
+    }
+
+    .jump-panel.open {
+      display: block;
+      animation: fadeUp 0.2s ease both
+    }
+
+    .jump-panel-inner {
+      padding: 16px 20px 20px;
+      max-height: 70vh;
+      overflow-y: auto
+    }
+
+    .jump-section-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted-light);
+      padding: 10px 0 6px;
+      border-top: 1px solid var(--border);
+      margin-top: 8px
+    }
+
+    .jump-section-label:first-child {
+      border-top: none;
+      margin-top: 0;
+      padding-top: 0
+    }
+
+    .jump-links {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4px
+    }
+
+    @media(max-width:520px) {
+      .jump-links {
+        grid-template-columns: 1fr
+      }
+    }
+
+    .jump-link {
+      display: flex;
+      flex-direction: column;
+      padding: 9px 12px;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: background 0.15s;
+      border: none;
+      background: transparent;
+      text-align: left;
+      width: 100%
+    }
+
+    .jump-link:hover {
+      background: var(--bg)
+    }
+
+    .jump-link.current {
+      background: var(--teal-pale)
+    }
+
+    .jump-link-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--navy);
+      line-height: 1.3
+    }
+
+    .jump-link.current .jump-link-title {
+      color: var(--teal)
+    }
+
+    .jump-link-desc {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 2px;
+      line-height: 1.4
+    }
+
+    .jump-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 199;
+      display: none
+    }
+
+    .jump-overlay.open {
+      display: block
+    }
+
+    .btn-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: transparent;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 10px 20px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--navy-mid);
+      cursor: pointer;
+      transition: var(--transition)
+    }
+
+    .btn-back:hover {
+      border-color: var(--navy);
+      color: var(--navy)
+    }
+
+    .btn-back:disabled {
+      opacity: 0.3;
+      cursor: not-allowed
+    }
+
+    .btn-continue {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--navy);
+      border: none;
+      border-radius: var(--radius-sm);
+      padding: 12px 28px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14.5px;
+      font-weight: 600;
+      color: white;
+      cursor: pointer;
+      transition: var(--transition);
+      box-shadow: 0 3px 14px rgba(28, 43, 74, 0.2)
+    }
+
+    .btn-continue:hover {
+      background: var(--navy-mid);
+      transform: translateY(-1px);
+      box-shadow: 0 5px 20px rgba(28, 43, 74, 0.28)
+    }
+
+    .btn-continue svg {
+      transition: transform 0.2s
+    }
+
+    .btn-continue:hover svg {
+      transform: translateX(3px)
+    }
+
+    .btn-teal {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--teal);
+      border: none;
+      border-radius: var(--radius-sm);
+      padding: 12px 28px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14.5px;
+      font-weight: 600;
+      color: white;
+      cursor: pointer;
+      transition: var(--transition);
+      box-shadow: 0 3px 14px rgba(45, 143, 135, 0.25)
+    }
+
+    .btn-teal:hover {
+      background: var(--teal-light);
+      transform: translateY(-1px)
+    }
+
+    .page-content {
+      max-width: 1040px;
+      margin: 0 auto;
+      padding: 40px 24px 100px
+    }
+
+    .page {
+      display: none;
+      animation: fadeUp 0.26s cubic-bezier(0.4, 0, 0.2, 1) both
+    }
+
+    .page.active {
+      display: block
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(-8px)
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0)
+      }
+    }
+
+    .page-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--teal-pale);
+      border: 1px solid rgba(45, 143, 135, 0.25);
+      border-radius: 20px;
+      padding: 5px 14px;
+      font-size: 11.5px;
+      font-weight: 600;
+      color: var(--teal);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 14px
+    }
+
+    .page-eyebrow.amber {
+      background: var(--amber-light);
+      border-color: var(--amber-border);
+      color: var(--amber)
+    }
+
+    .hero-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(32px, 5vw, 52px);
+      line-height: 1.1;
+      color: var(--navy);
+      margin-bottom: 14px;
+      letter-spacing: -0.01em
+    }
+
+    .hero-title em {
+      font-style: italic;
+      color: var(--teal)
+    }
+
+    .hero-sub {
+      font-size: 18px;
+      color: var(--muted);
+      font-weight: 400;
+      max-width: 560px;
+      line-height: 1.55;
+      margin-bottom: 10px
+    }
+
+    .hero-body {
+      font-size: 15px;
+      color: var(--muted);
+      max-width: 580px;
+      line-height: 1.7;
+      margin-bottom: 36px
+    }
+
+    .page-title {
+      font-family: 'DM Sans', sans-serif;
+      font-size: clamp(26px, 3vw, 38px);
+      font-weight: 700;
+      color: var(--navy);
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      margin-bottom: 10px
+    }
+
+    .page-subtitle {
+      font-size: 16px;
+      color: var(--muted);
+      margin-bottom: 28px;
+      line-height: 1.55;
+      max-width: 620px
+    }
+
+    .section-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 6px
+    }
+
+    .card {
+      background: var(--card);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      padding: 24px
+    }
+
+    .card.card-sm {
+      padding: 18px 20px
+    }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px
+    }
+
+    @media(max-width:680px) {
+      .two-col {
+        grid-template-columns: 1fr
+      }
+    }
+
+    .flow-visual {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin: 32px 0 40px
+    }
+
+    .flow-step {
+      display: flex;
+      align-items: center;
+      gap: 6px
+    }
+
+    .flow-pill {
+      background: var(--card);
+      border: 1.5px solid var(--border);
+      border-radius: 24px;
+      padding: 8px 18px;
+      font-size: 13.5px;
+      font-weight: 600;
+      color: var(--navy-mid);
+      box-shadow: var(--shadow);
+      white-space: nowrap
+    }
+
+    .flow-pill.hl {
+      background: var(--navy);
+      color: white;
+      border-color: var(--navy)
+    }
+
+    .flow-pill.teal {
+      background: var(--teal);
+      color: white;
+      border-color: var(--teal)
+    }
+
+    .flow-arrow {
+      color: var(--muted);
+      font-size: 13px;
+      opacity: 0.45
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--navy);
+      color: white;
+      border: none;
+      border-radius: var(--radius);
+      padding: 16px 36px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      letter-spacing: 0.01em;
+      box-shadow: 0 4px 20px rgba(28, 43, 74, 0.22)
+    }
+
+    .btn-primary:hover {
+      background: var(--navy-mid);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 28px rgba(28, 43, 74, 0.28)
+    }
+
+    .btn-primary svg {
+      transition: transform 0.2s
+    }
+
+    .btn-primary:hover svg {
+      transform: translateX(3px)
+    }
+
+    .build-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px
+    }
+
+    .build-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 14.5px;
+      color: var(--navy);
+      line-height: 1.5
+    }
+
+    .build-dot {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: var(--teal-pale);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 2px
+    }
+
+    .skill-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 8px
+    }
+
+    .skill-stack-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px 20px;
+      box-shadow: var(--shadow);
+      transition: var(--transition)
+    }
+
+    .skill-stack-item:hover {
+      box-shadow: var(--shadow-md);
+      transform: translateY(-1px)
+    }
+
+    .skill-num {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: var(--navy);
+      color: white;
+      font-size: 13px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0
+    }
+
+    .skill-stack-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: 3px
+    }
+
+    .skill-stack-desc {
+      font-size: 13.5px;
+      color: var(--muted);
+      line-height: 1.5
+    }
+
+    .framework-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 12px
+    }
+
+    .fw-step {
+      display: flex;
+      gap: 16px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px 20px;
+      box-shadow: var(--shadow)
+    }
+
+    .fw-num {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: var(--teal-pale);
+      color: var(--teal);
+      font-size: 13px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0
+    }
+
+    .fw-label {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--teal);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 4px
+    }
+
+    .fw-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: 4px
+    }
+
+    .fw-phrase {
+      font-size: 13.5px;
+      color: var(--muted);
+      font-style: italic
+    }
+
+    .memory-bar {
+      background: var(--navy);
+      color: white;
+      border-radius: var(--radius);
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 16px
+    }
+
+    .memory-bar-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      opacity: 0.55;
+      margin-right: 6px
+    }
+
+    .memory-pill {
+      background: rgba(255, 255, 255, 0.12);
+      border-radius: 20px;
+      padding: 5px 14px;
+      font-size: 13px;
+      font-weight: 600
+    }
+
+    .memory-arrow {
+      opacity: 0.4;
+      font-size: 13px
+    }
+
+    .completion-framework {
+      background: var(--navy);
+      color: white;
+      border-radius: var(--radius);
+      padding: 24px 26px;
+      box-shadow: var(--shadow);
+    }
+
+    .completion-framework-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.48);
+      margin-bottom: 18px;
+    }
+
+    .completion-framework-list {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .completion-framework-step {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      position: relative;
+      padding: 0 0 16px;
+    }
+
+    .completion-framework-step:last-child {
+      padding-bottom: 0;
+    }
+
+    .completion-framework-step:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      left: 14px;
+      top: 32px;
+      width: 1px;
+      height: calc(100% - 18px);
+      background: rgba(255, 255, 255, 0.16);
+    }
+
+    .completion-framework-dot {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.13);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .completion-framework-name {
+      font-size: 15px;
+      font-weight: 700;
+      line-height: 1.3;
+    }
+
+    .mini-example {
+      background: var(--teal-pale);
+      border: 1px solid rgba(45, 143, 135, 0.2);
+      border-radius: var(--radius);
+      padding: 18px 20px;
+      margin-top: 14px
+    }
+
+    .mini-example-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 10px
+    }
+
+    .client-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--muted);
+      margin-bottom: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em
+    }
+
+    .client-quote {
+      background: white;
+      border-radius: var(--radius-sm);
+      padding: 10px 14px;
+      font-size: 13.5px;
+      color: var(--muted);
+      font-style: italic;
+      margin-bottom: 8px;
+      border-left: 3px solid var(--teal)
+    }
+
+    .response-text {
+      font-size: 13.5px;
+      color: var(--navy);
+      line-height: 1.6
+    }
+
+    .pushback-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 12px;
+      margin-top: 8px
+    }
+
+    .pushback-card {
+      background: var(--card);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px 20px;
+      cursor: pointer;
+      transition: var(--transition);
+      box-shadow: var(--shadow)
+    }
+
+    .pushback-card:hover {
+      border-color: var(--teal);
+      box-shadow: var(--shadow-md);
+      transform: translateY(-2px)
+    }
+
+    .pushback-card.active {
+      border-color: var(--teal);
+      background: var(--teal-pale)
+    }
+
+    .pushback-type {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--teal);
+      margin-bottom: 6px
+    }
+
+    .pushback-quote {
+      font-size: 14.5px;
+      font-weight: 600;
+      color: var(--navy);
+      font-style: italic;
+      margin-bottom: 10px;
+      line-height: 1.4
+    }
+
+    .pushback-meta {
+      font-size: 12.5px;
+      color: var(--muted);
+      line-height: 1.5
+    }
+
+    .pushback-meta strong {
+      color: var(--navy-mid);
+      font-weight: 600
+    }
+
+    .pushback-detail {
+      display: none;
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px solid rgba(45, 143, 135, 0.2);
+      font-size: 13px;
+      color: var(--navy-mid);
+      line-height: 1.55
+    }
+
+    .pushback-card.active .pushback-detail {
+      display: block
+    }
+
+    .pushback-move {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: var(--teal);
+      color: white;
+      border-radius: 20px;
+      padding: 4px 11px;
+      font-size: 12px;
+      font-weight: 600;
+      margin-top: 8px
+    }
+
+    .skill-hero {
+      background: var(--navy);
+      border-radius: var(--radius);
+      padding: 28px 28px 24px;
+      margin-bottom: 20px;
+      position: relative;
+      overflow: hidden
+    }
+
+    .skill-hero::before {
+      content: '';
+      position: absolute;
+      top: -30px;
+      right: -30px;
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      background: rgba(45, 143, 135, 0.12)
+    }
+
+    .skill-number-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      padding: 4px 12px;
+      font-size: 11.5px;
+      font-weight: 700;
+      color: rgba(255, 255, 255, 0.7);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 10px
+    }
+
+    .skill-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(22px, 3vw, 32px);
+      color: white;
+      line-height: 1.15;
+      margin-bottom: 8px
+    }
+
+    .skill-key-move {
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.7);
+      line-height: 1.55
+    }
+
+    .key-move-hl {
+      color: white;
+      font-weight: 600
+    }
+
+    .info-block {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 22px;
+      margin-bottom: 14px;
+      box-shadow: var(--shadow)
+    }
+
+    .info-block-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 8px
+    }
+
+    .info-block-text {
+      font-size: 14px;
+      color: var(--navy);
+      line-height: 1.6
+    }
+
+    .principle-block {
+      background: var(--amber-light);
+      border: 1px solid var(--amber-border);
+      border-radius: var(--radius);
+      padding: 14px 18px;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px
+    }
+
+    .principle-icon {
+      width: 26px;
+      height: 26px;
+      border-radius: 6px;
+      background: rgba(200, 132, 58, 0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 2px
+    }
+
+    .principle-text {
+      font-size: 14.5px;
+      font-weight: 600;
+      color: var(--amber);
+      line-height: 1.45
+    }
+
+    .phrase-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 8px
+    }
+
+    .phrase-chip {
+      background: var(--teal-pale);
+      border: 1px solid rgba(45, 143, 135, 0.25);
+      border-radius: 24px;
+      padding: 7px 15px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--teal);
+      cursor: pointer;
+      transition: var(--transition);
+      user-select: none
+    }
+
+    .phrase-chip:hover,
+    .phrase-chip.selected {
+      background: var(--teal);
+      color: white
+    }
+
+    .ws-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 8px
+    }
+
+    @media(max-width:600px) {
+      .ws-grid {
+        grid-template-columns: 1fr
+      }
+    }
+
+    .ws-card {
+      border-radius: var(--radius);
+      padding: 16px 18px
+    }
+
+    .ws-card.weak {
+      background: #FEF2F2;
+      border: 1px solid #FECACA
+    }
+
+    .ws-card.strong {
+      background: var(--teal-pale);
+      border: 1px solid rgba(45, 143, 135, 0.25)
+    }
+
+    .ws-tag {
+      font-size: 10.5px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 8px
+    }
+
+    .ws-card.weak .ws-tag {
+      color: #DC2626
+    }
+
+    .ws-card.strong .ws-tag {
+      color: var(--teal)
+    }
+
+    .ws-text {
+      font-size: 13.5px;
+      line-height: 1.55;
+      font-style: italic
+    }
+
+    .ws-card.weak .ws-text {
+      color: #7F1D1D
+    }
+
+    .ws-card.strong .ws-text {
+      color: var(--navy)
+    }
+
+    .practice-section {
+      margin-top: 18px
+    }
+
+    .practice-tabs {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 14px;
+      flex-wrap: wrap
+    }
+
+    .practice-tab {
+      padding: 7px 16px;
+      border-radius: 24px;
+      border: 1.5px solid var(--border);
+      background: var(--card);
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--muted);
+      cursor: pointer;
+      transition: var(--transition)
+    }
+
+    .practice-tab.active {
+      background: var(--navy);
+      border-color: var(--navy);
+      color: white
+    }
+
+    .practice-tab:hover:not(.active) {
+      border-color: var(--navy);
+      color: var(--navy)
+    }
+
+    .practice-pane {
+      display: none
+    }
+
+    .practice-pane.active {
+      display: block
+    }
+
+    .practice-card {
+      background: var(--card);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 22px;
+      box-shadow: var(--shadow)
+    }
+
+    .practice-prompt {
+      background: #F8F7F4;
+      border-radius: var(--radius-sm);
+      padding: 12px 16px;
+      font-size: 14px;
+      font-style: italic;
+      color: var(--navy-mid);
+      border-left: 3px solid var(--navy);
+      margin-bottom: 14px;
+      line-height: 1.55
+    }
+
+    .practice-task {
+      font-size: 14px;
+      color: var(--navy);
+      line-height: 1.6
+    }
+
+    .practice-options {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      margin-top: 10px
+    }
+
+    .practice-opt {
+      background: var(--bg);
+      border: 1.5px solid var(--border);
+      border-radius: 20px;
+      padding: 5px 13px;
+      font-size: 12.5px;
+      font-weight: 500;
+      color: var(--navy-mid);
+      cursor: pointer;
+      transition: var(--transition)
+    }
+
+    .practice-opt:hover {
+      border-color: var(--teal);
+      color: var(--teal);
+      background: var(--teal-pale)
+    }
+
+    .practice-opt.selected {
+      background: var(--teal);
+      color: white;
+      border-color: var(--teal)
+    }
+
+    .challenge-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 10px;
+      margin-top: 8px
+    }
+
+    .challenge-card {
+      background: var(--card);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px 18px;
+      cursor: pointer;
+      transition: var(--transition);
+      box-shadow: var(--shadow)
+    }
+
+    .challenge-card:hover {
+      border-color: var(--amber);
+      box-shadow: var(--shadow-md);
+      transform: translateY(-1px)
+    }
+
+    .challenge-card.active {
+      border-color: var(--amber);
+      background: var(--amber-light)
+    }
+
+    .challenge-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: var(--amber-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 8px;
+      flex-shrink: 0
+    }
+
+    .challenge-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: 4px
+    }
+
+    .challenge-quote {
+      font-size: 13px;
+      color: var(--muted);
+      font-style: italic;
+      line-height: 1.45
+    }
+
+    .quick-recap {
+      background: var(--navy);
+      border-radius: var(--radius);
+      padding: 18px 22px;
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      margin-top: 18px
+    }
+
+    .recap-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0
+    }
+
+    .recap-label {
+      font-size: 10.5px;
+      font-weight: 700;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.5);
+      margin-bottom: 4px
+    }
+
+    .recap-text {
+      font-size: 14px;
+      color: white;
+      line-height: 1.55;
+      margin-bottom: 6px
+    }
+
+    .recap-phrase {
+      display: inline-block;
+      background: rgba(45, 143, 135, 0.25);
+      border-radius: 20px;
+      padding: 5px 14px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #3AACA3;
+      font-style: italic
+    }
+
+    /* Next modules */
+    .suggested-next-section {
+      margin-top: 28px;
+    }
+
+    .suggested-next-label {
+      margin-bottom: 12px;
+    }
+
+    .next-modules {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .next-module-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px 20px;
+      box-shadow: var(--shadow);
+      display: grid;
+      grid-template-columns: 56px 1fr auto;
+      gap: 16px;
+      align-items: center;
+      transition: var(--transition);
+    }
+
+    .next-module-card:hover {
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-md);
+      border-color: rgba(45, 143, 135, 0.28);
+    }
+
+    .next-module-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 14px;
+      background: var(--teal-pale);
+      color: var(--teal);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .next-module-kicker {
+      font-size: 10.5px;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 4px;
+    }
+
+    .next-module-title {
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--navy);
+      line-height: 1.25;
+      margin-bottom: 5px;
+    }
+
+    .next-module-desc {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
+    .next-module-desc strong {
+      color: var(--navy-mid);
+      font-weight: 700;
+    }
+
+    .next-module-arrow {
+      color: var(--teal);
+      font-size: 24px;
+      line-height: 1;
+      opacity: 0.85;
+      padding-left: 4px;
+    }
+
+    @media(max-width:700px) {
+      .next-modules {
+        grid-template-columns: 1fr;
+      }
+
+      .next-module-card {
+        grid-template-columns: 48px 1fr auto;
+        gap: 14px;
+        padding: 16px;
+      }
+
+      .next-module-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: 12px;
+      }
+
+      .next-module-arrow {
+        font-size: 20px;
+      }
+    }
+
+    .optional-q {
+      background: var(--card);
+      border: 1px dashed var(--border);
+      border-radius: var(--radius);
+      padding: 16px 20px;
+      margin-top: 16px
+    }
+
+    .optional-q-label {
+      font-size: 10.5px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted-light);
+      margin-bottom: 6px
+    }
+
+    .optional-q-text {
+      font-size: 14px;
+      color: var(--muted);
+      font-style: italic
+    }
+
+    .sequence-steps {
+      display: flex;
+      flex-direction: column
+    }
+
+    .seq-step {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start
+    }
+
+    .seq-line-col {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      flex-shrink: 0;
+      width: 32px
+    }
+
+    .seq-dot {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--teal-pale);
+      border: 2px solid var(--teal);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--teal);
+      flex-shrink: 0
+    }
+
+    .seq-connector {
+      width: 2px;
+      height: 24px;
+      background: rgba(45, 143, 135, 0.2)
+    }
+
+    .seq-content {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 14px 16px;
+      margin-bottom: 10px;
+      flex: 1;
+      box-shadow: var(--shadow)
+    }
+
+    .seq-label {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: var(--teal);
+      margin-bottom: 4px
+    }
+
+    .seq-phrase {
+      font-size: 14px;
+      font-style: italic;
+      color: var(--navy)
+    }
+
+    .full-example {
+      margin-top: 16px
+    }
+
+    .full-example-toggle {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--card);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px 20px;
+      cursor: pointer;
+      transition: var(--transition);
+      box-shadow: var(--shadow)
+    }
+
+    .full-example-toggle:hover {
+      border-color: var(--teal)
+    }
+
+    .full-example-toggle.open {
+      border-color: var(--teal);
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0
+    }
+
+    .toggle-label {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--navy)
+    }
+
+    .toggle-sub {
+      font-size: 12.5px;
+      color: var(--muted);
+      margin-top: 2px
+    }
+
+    .toggle-chevron {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: var(--bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.22s;
+      flex-shrink: 0
+    }
+
+    .full-example-toggle.open .toggle-chevron {
+      transform: rotate(180deg)
+    }
+
+    .full-example-body {
+      display: none;
+      background: var(--teal-pale);
+      border: 1.5px solid var(--teal);
+      border-top: none;
+      border-radius: 0 0 var(--radius) var(--radius);
+      padding: 18px 20px
+    }
+
+    .full-example-toggle.open+.full-example-body {
+      display: block
+    }
+
+    .lang-accordion {
+      display: flex;
+      flex-direction: column;
+      gap: 8px
+    }
+
+    .lang-group {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow)
+    }
+
+    .lang-group-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 20px;
+      cursor: pointer;
+      transition: background 0.18s;
+      user-select: none
+    }
+
+    .lang-group-header:hover {
+      background: #FAFAF8
+    }
+
+    .lang-group-title {
+      font-size: 14.5px;
+      font-weight: 700;
+      color: var(--navy)
+    }
+
+    .lang-group-count {
+      font-size: 12px;
+      color: var(--muted);
+      margin-left: 8px
+    }
+
+    .lang-chevron {
+      transition: transform 0.22s
+    }
+
+    .lang-group.open .lang-chevron {
+      transform: rotate(180deg)
+    }
+
+    .lang-group-body {
+      display: none;
+      padding: 4px 20px 18px;
+      border-top: 1px solid var(--border)
+    }
+
+    .lang-group.open .lang-group-body {
+      display: block
+    }
+
+    .lang-phrase-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding-top: 12px
+    }
+
+    .lang-phrase {
+      background: var(--teal-pale);
+      border: 1px solid rgba(45, 143, 135, 0.2);
+      border-radius: 20px;
+      padding: 7px 14px;
+      font-size: 13px;
+      color: var(--teal);
+      font-weight: 500;
+      cursor: pointer;
+      transition: var(--transition)
+    }
+
+    .lang-phrase:hover {
+      background: var(--teal);
+      color: white
+    }
+
+    .prompt-library {
+      display: flex;
+      flex-direction: column;
+      gap: 10px
+    }
+
+    .prompt-item {
+      background: var(--card);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow)
+    }
+
+    .prompt-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 20px;
+      cursor: pointer;
+      transition: background 0.18s
+    }
+
+    .prompt-header:hover {
+      background: #FAFAF8
+    }
+
+    .prompt-item.open .prompt-header {
+      background: var(--navy)
+    }
+
+    .prompt-item.open .prompt-title {
+      color: white
+    }
+
+    .prompt-item.open .prompt-quote {
+      color: rgba(255, 255, 255, 0.65)
+    }
+
+    .prompt-title {
+      font-size: 14.5px;
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: 2px
+    }
+
+    .prompt-quote {
+      font-size: 12.5px;
+      color: var(--muted);
+      font-style: italic
+    }
+
+    .prompt-chevron {
+      flex-shrink: 0;
+      transition: transform 0.22s
+    }
+
+    .prompt-item.open .prompt-chevron {
+      transform: rotate(180deg)
+    }
+
+    .prompt-item.open .prompt-chevron path {
+      stroke: white
+    }
+
+    .prompt-body {
+      display: none;
+      padding: 18px 20px;
+      border-top: 1px solid var(--border)
+    }
+
+    .prompt-item.open .prompt-body {
+      display: block
+    }
+
+    .prompt-options {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px
+    }
+
+    .prompt-opt {
+      background: var(--bg);
+      border: 1.5px solid var(--border);
+      border-radius: 20px;
+      padding: 6px 14px;
+      font-size: 12.5px;
+      font-weight: 500;
+      color: var(--navy-mid);
+      cursor: pointer;
+      transition: var(--transition)
+    }
+
+    .prompt-opt:hover {
+      background: var(--teal-pale);
+      border-color: var(--teal);
+      color: var(--teal)
+    }
+
+    .prompt-opt.selected {
+      background: var(--teal);
+      border-color: var(--teal);
+      color: white
+    }
+
+    .good-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px
+    }
+
+    .good-item {
+      display: flex;
+      gap: 14px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px 18px;
+      box-shadow: var(--shadow)
+    }
+
+    .good-num {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--teal);
+      color: white;
+      font-size: 12px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 2px
+    }
+
+    .good-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: 4px
+    }
+
+    .good-phrase {
+      font-size: 13px;
+      color: var(--muted);
+      font-style: italic
+    }
+
+    .checklist {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px
+    }
+
+    .checklist-item {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      background: var(--teal-pale);
+      border: 1px solid rgba(45, 143, 135, 0.2);
+      border-radius: 20px;
+      padding: 6px 14px;
+      font-size: 13px;
+      color: var(--teal);
+      font-weight: 500
+    }
+
+    .completion-hero {
+      text-align: center;
+      padding: 32px 20px 36px
+    }
+
+    .completion-badge {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      background: var(--teal);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+      box-shadow: 0 8px 32px rgba(45, 143, 135, 0.3)
+    }
+
+    .completion-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(28px, 4vw, 42px);
+      color: var(--navy);
+      margin-bottom: 10px;
+      line-height: 1.15
+    }
+
+    .completion-sub {
+      font-size: 17px;
+      color: var(--muted);
+      max-width: 480px;
+      margin: 0 auto 24px;
+      line-height: 1.55
+    }
+
+    .win-message {
+      background: var(--teal);
+      color: white;
+      border-radius: var(--radius);
+      padding: 18px 24px;
+      font-size: 15px;
+      font-weight: 600;
+      text-align: center;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 20px rgba(45, 143, 135, 0.28)
+    }
+
+    .can-do-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 8px;
+      margin-bottom: 16px
+    }
+
+    .can-do-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 14px;
+      color: var(--navy)
+    }
+
+    .can-do-check {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: var(--teal-pale);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0
+    }
+
+    .reflection-q {
+      background: var(--card);
+      border: 1px dashed var(--border);
+      border-radius: var(--radius-sm);
+      padding: 13px 16px;
+      font-size: 14px;
+      color: var(--muted);
+      font-style: italic;
+      margin-bottom: 8px
+    }
+
+    .bonus-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 14px;
+      margin-top: 8px
+    }
+
+    .bonus-card {
+      background: var(--card);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      padding: 22px;
+      box-shadow: var(--shadow);
+      transition: var(--transition)
+    }
+
+    .bonus-card:hover {
+      box-shadow: var(--shadow-md);
+      transform: translateY(-2px)
+    }
+
+    .bonus-num {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted-light);
+      margin-bottom: 8px
+    }
+
+    .bonus-title {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: 8px
+    }
+
+    .bonus-desc {
+      font-size: 13.5px;
+      color: var(--muted);
+      line-height: 1.55;
+      margin-bottom: 12px
+    }
+
+    .bonus-options {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 8px
+    }
+
+    .bonus-opt {
+      background: var(--bg);
+      border: 1.5px solid var(--border);
+      border-radius: 20px;
+      padding: 5px 12px;
+      font-size: 12.5px;
+      color: var(--navy-mid);
+      font-weight: 500;
+      cursor: pointer;
+      transition: var(--transition)
+    }
+
+    .bonus-opt:hover,
+    .bonus-opt.selected {
+      background: var(--navy);
+      color: white;
+      border-color: var(--navy)
+    }
+
+    .bonus-for {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 6px;
+      font-style: italic
+    }
+
+    .mt-8 {
+      margin-top: 8px
+    }
+
+    .mt-12 {
+      margin-top: 12px
+    }
+
+    .mt-14 {
+      margin-top: 14px
+    }
+
+    .mt-16 {
+      margin-top: 16px
+    }
+
+    .mt-20 {
+      margin-top: 20px
+    }
+
+    .mb-8 {
+      margin-bottom: 8px
+    }
+  </style>
+</head>
+
+<body>
+  <header class="top-bar">
+    <div class="top-bar-inner">
+      <div class="brand">
+        <div class="brand-icon">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <path d="M10 2L4 5v5c0 3.5 2.5 6.5 6 7.5C14.5 16.5 17 13.5 17 10V5L10 2z" stroke="white" stroke-width="1.3"
+              fill="none" opacity="0.8" />
+            <path d="M7.5 10l2 2 3-3" stroke="#2D8F87" stroke-width="1.6" stroke-linecap="round"
+              stroke-linejoin="round" />
+          </svg>
+        </div>
+        <div>
+          <div class="brand-name">Objection Handling</div>
+          <div class="brand-sub">Business Communication Module</div>
+        </div>
+      </div>
+      <nav class="section-progress" id="sectionProgress">
+        <div class="sec-step clickable" id="sec-0" onclick="goToPage(1)">
+          <div class="sec-dot">1</div><span class="sec-label">Start</span>
+        </div>
+        <div class="sec-connector" id="conn-0"></div>
+        <div class="sec-step clickable" id="sec-1" onclick="goToPage(4)">
+          <div class="sec-dot">2</div><span class="sec-label">Framework</span>
+        </div>
+        <div class="sec-connector" id="conn-1"></div>
+        <div class="sec-step clickable" id="sec-2" onclick="goToPage(6)">
+          <div class="sec-dot">3</div><span class="sec-label">Skills</span>
+        </div>
+        <div class="sec-connector" id="conn-2"></div>
+        <div class="sec-step clickable" id="sec-3" onclick="goToPage(12)">
+          <div class="sec-dot">4</div><span class="sec-label">Practice</span>
+        </div>
+        <div class="sec-connector" id="conn-3"></div>
+        <div class="sec-step clickable" id="sec-4" onclick="goToPage(17)">
+          <div class="sec-dot">5</div><span class="sec-label">Complete</span>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main class="page-content">
+
+    <!-- PAGE 1: LANDING -->
+    <div class="page active" id="page-1">
+      <div style="text-align:center;padding:20px 0 48px">
+        <div class="page-eyebrow"><svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+            <circle cx="6" cy="6" r="5" stroke="currentColor" stroke-width="1.3" />
+            <path d="M4 6l1.5 1.5L8 4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" />
+          </svg> Business Communication Module</div>
+        <h1 class="hero-title" style="max-width:560px;margin:0 auto 16px"><em>Objection</em><br>Handling</h1>
+        <p class="hero-sub" style="margin:0 auto 12px">Respond clearly and professionally when clients push back.</p>
+        <p class="hero-body" style="margin:0 auto 36px">Build the structure, language, and confidence to handle
+          objections about price, timing, value, urgency, fit, and next steps in English.</p>
+        <div class="flow-visual">
+          <div class="flow-step">
+            <div class="flow-pill">Acknowledge</div><span class="flow-arrow">&#8594;</span>
+          </div>
+          <div class="flow-step">
+            <div class="flow-pill">Clarify</div><span class="flow-arrow">&#8594;</span>
+          </div>
+          <div class="flow-step">
+            <div class="flow-pill hl">Reframe</div><span class="flow-arrow">&#8594;</span>
+          </div>
+          <div class="flow-step">
+            <div class="flow-pill">Respond</div><span class="flow-arrow">&#8594;</span>
+          </div>
+          <div class="flow-step">
+            <div class="flow-pill teal">Move Forward</div>
+          </div>
+        </div>
+        <button class="btn-primary" onclick="goToPage(2)">Start Module <svg width="16" height="16" viewBox="0 0 16 16"
+            fill="none">
+            <path d="M3 8h10M9 4l4 4-4 4" stroke="white" stroke-width="1.6" stroke-linecap="round"
+              stroke-linejoin="round" />
+          </svg></button>
+        <div style="margin-top:28px;font-size:13px;color:var(--muted)">3&#8211;5 lessons &nbsp;&middot;&nbsp; 18 pages
+          &nbsp;&middot;&nbsp; Skill-based workspace</div>
+      </div>
+    </div>
+
+    <!-- PAGE 2: OVERVIEW -->
+    <div class="page" id="page-2">
+      <div class="page-eyebrow">Module Overview</div>
+      <h1 class="page-title">What This Module Builds</h1>
+      <p class="page-subtitle">Client objections are not always a rejection. Sometimes they are a request for more
+        clarity, more trust, more evidence, or a better reason to move forward.</p>
+      <div class="two-col mt-8">
+        <div>
+          <div class="card">
+            <div class="section-label mb-8">In this module</div>
+            <p style="font-size:14px;color:var(--muted);line-height:1.65;margin-bottom:14px">We&#8217;ll practise how to
+              respond when a client questions price, timing, value, urgency, fit, or next steps.</p>
+            <p style="font-size:14px;color:var(--muted);line-height:1.65">The goal is not to memorise a perfect script.
+              The goal is to build a reliable way to handle pushback while staying professional and in control.</p>
+          </div>
+          <div class="card mt-12" style="background:var(--navy);border-color:var(--navy)">
+            <div class="section-label" style="color:rgba(255,255,255,0.5);margin-bottom:8px">Typical path</div>
+            <div style="font-size:22px;font-weight:700;color:white;margin-bottom:4px">3&#8211;5 lessons</div>
+            <div style="font-size:13px;color:rgba(255,255,255,0.55)">Depending on the student&#8217;s situation and how
+              much practice is needed.</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="section-label mb-8">You&#8217;ll build</div>
+          <ul class="build-list">
+            <li>
+              <div class="build-dot"><svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+                  <path d="M2 5.5l2 2L8 3" stroke="#2D8F87" stroke-width="1.5" stroke-linecap="round"
+                    stroke-linejoin="round" />
+                </svg></div>Calmer responses to client pushback
+            </li>
+            <li>
+              <div class="build-dot"><svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+                  <path d="M2 5.5l2 2L8 3" stroke="#2D8F87" stroke-width="1.5" stroke-linecap="round"
+                    stroke-linejoin="round" />
+                </svg></div>Better clarification questions
+            </li>
+            <li>
+              <div class="build-dot"><svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+                  <path d="M2 5.5l2 2L8 3" stroke="#2D8F87" stroke-width="1.5" stroke-linecap="round"
+                    stroke-linejoin="round" />
+                </svg></div>Less defensive language
+            </li>
+            <li>
+              <div class="build-dot"><svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+                  <path d="M2 5.5l2 2L8 3" stroke="#2D8F87" stroke-width="1.5" stroke-linecap="round"
+                    stroke-linejoin="round" />
+                </svg></div>Stronger value-based responses
+            </li>
+            <li>
+              <div class="build-dot"><svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+                  <path d="M2 5.5l2 2L8 3" stroke="#2D8F87" stroke-width="1.5" stroke-linecap="round"
+                    stroke-linejoin="round" />
+                </svg></div>More control when the conversation becomes difficult
+            </li>
+            <li>
+              <div class="build-dot"><svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+                  <path d="M2 5.5l2 2L8 3" stroke="#2D8F87" stroke-width="1.5" stroke-linecap="round"
+                    stroke-linejoin="round" />
+                </svg></div>Clearer movement toward the next step
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAGE 3: SKILL PATH -->
+    <div class="page" id="page-3">
+      <div class="page-eyebrow">Skill Path</div>
+      <h1 class="page-title">Objection handling is built one layer at a time.</h1>
+      <p class="page-subtitle">A strong objection response is not just one sentence. It is a sequence &#8212; stay calm,
+        understand what the client really means, respond clearly, and keep the conversation moving.</p>
+      <div class="skill-stack mt-8">
+        <div class="skill-stack-item">
+          <div class="skill-num">1</div>
+          <div>
+            <div class="skill-stack-title">Slow the moment down</div>
+            <div class="skill-stack-desc">Create space before answering.</div>
+          </div>
+        </div>
+        <div class="skill-stack-item">
+          <div class="skill-num">2</div>
+          <div>
+            <div class="skill-stack-title">Acknowledge without surrendering</div>
+            <div class="skill-stack-desc">Show that you understand the concern without giving up your position.</div>
+          </div>
+        </div>
+        <div class="skill-stack-item">
+          <div class="skill-num">3</div>
+          <div>
+            <div class="skill-stack-title">Clarify the real concern</div>
+            <div class="skill-stack-desc">Find out what the objection actually means before answering it.</div>
+          </div>
+        </div>
+        <div class="skill-stack-item">
+          <div class="skill-num">4</div>
+          <div>
+            <div class="skill-stack-title">Reframe the issue</div>
+            <div class="skill-stack-desc">Shift the conversation from resistance to value, fit, timing, priority, or
+              business impact.</div>
+          </div>
+        </div>
+        <div class="skill-stack-item">
+          <div class="skill-num">5</div>
+          <div>
+            <div class="skill-stack-title">Respond with value</div>
+            <div class="skill-stack-desc">Connect your response back to the client&#8217;s problem, desired result, or
+              cost of inaction.</div>
+          </div>
+        </div>
+        <div class="skill-stack-item">
+          <div class="skill-num" style="background:var(--teal)">6</div>
+          <div>
+            <div class="skill-stack-title">Move the conversation forward</div>
+            <div class="skill-stack-desc">Do not let the objection become the end of the conversation.</div>
+          </div>
+        </div>
+      </div>
+      <div class="optional-q mt-20">
+        <div class="optional-q-label">Optional &#8212; quick question</div>
+        <div class="optional-q-text">Which part feels hardest: staying calm, asking a question, explaining value, or
+          getting to a next step?</div>
+      </div>
+    </div>
+
+    <!-- PAGE 4: CORE FRAMEWORK -->
+    <div class="page" id="page-4">
+      <div class="page-eyebrow">Core Framework</div>
+      <h1 class="page-title">The Objection Response Framework</h1>
+      <p class="page-subtitle">When a client pushes back, it is easy to react too quickly. This structure gives you a
+        clear path.</p>
+      <div class="framework-steps">
+        <div class="fw-step">
+          <div class="fw-num">1</div>
+          <div>
+            <div class="fw-label">Acknowledge</div>
+            <div class="fw-title">Show that you understand the concern.</div>
+            <div class="fw-phrase">&#8220;I understand why that would be a concern.&#8221;</div>
+          </div>
+        </div>
+        <div class="fw-step">
+          <div class="fw-num">2</div>
+          <div>
+            <div class="fw-label">Clarify</div>
+            <div class="fw-title">Ask what the real issue is before answering.</div>
+            <div class="fw-phrase">&#8220;Can I clarify whether the concern is budget, timing, or expected
+              return?&#8221;</div>
+          </div>
+        </div>
+        <div class="fw-step">
+          <div class="fw-num">3</div>
+          <div>
+            <div class="fw-label">Reframe</div>
+            <div class="fw-title">Move the conversation toward the bigger issue.</div>
+            <div class="fw-phrase">&#8220;The bigger question is whether this solves the problem you described.&#8221;
+            </div>
+          </div>
+        </div>
+        <div class="fw-step">
+          <div class="fw-num">4</div>
+          <div>
+            <div class="fw-label">Respond with Value</div>
+            <div class="fw-title">Connect your answer to the client&#8217;s problem or desired result.</div>
+            <div class="fw-phrase">&#8220;The value here is that your team can reduce delays and avoid manual
+              follow-up.&#8221;</div>
+          </div>
+        </div>
+        <div class="fw-step">
+          <div class="fw-num" style="background:var(--teal-pale);color:var(--teal)">5</div>
+          <div>
+            <div class="fw-label">Move Forward</div>
+            <div class="fw-title">Create a useful next step.</div>
+            <div class="fw-phrase">&#8220;Would it make sense to compare this with your current process?&#8221;</div>
+          </div>
+        </div>
+      </div>
+      <div class="memory-bar mt-16"><span class="memory-bar-label">Remember</span><span
+          class="memory-pill">Acknowledge</span><span class="memory-arrow">&#8594;</span><span
+          class="memory-pill">Clarify</span><span class="memory-arrow">&#8594;</span><span
+          class="memory-pill">Reframe</span><span class="memory-arrow">&#8594;</span><span
+          class="memory-pill">Respond</span><span class="memory-arrow">&#8594;</span><span class="memory-pill">Move
+          Forward</span></div>
+      <div class="mini-example mt-16">
+        <div class="mini-example-label">Mini Example &#8212; Full Sequence</div>
+        <div class="client-label">Client</div>
+        <div class="client-quote">&#8220;It&#8217;s too expensive.&#8221;</div>
+        <div class="client-label" style="margin-top:10px">Response</div>
+        <div class="response-text">&#8220;I understand why price matters. Can I clarify whether the concern is the total
+          cost or whether the value is not clear enough yet? The bigger question is whether this solves the problem you
+          described. If the main issue is lost time, the value is that your team can reduce delays and work more
+          consistently. Would it make sense to compare this with your current process?&#8221;</div>
+      </div>
+      <div class="optional-q mt-16">
+        <div class="optional-q-label">Optional &#8212; quick question</div>
+        <div class="optional-q-text">Which step do you usually skip when someone pushes back?</div>
+      </div>
+    </div>
+
+    <!-- PAGE 5: PUSHBACK MAP -->
+    <div class="page" id="page-5">
+      <div class="page-eyebrow">Situation Map</div>
+      <h1 class="page-title">Common Types of Pushback</h1>
+      <p class="page-subtitle">Most objections point to a concern we need to understand. The basic response path stays
+        the same &#8212; the language adapts to the situation.</p>
+      <p style="font-size:14px;color:var(--muted);margin-bottom:20px;font-style:italic">Tap a card to expand it.</p>
+      <div class="pushback-grid">
+        <div class="pushback-card" onclick="togglePushback(this)">
+          <div class="pushback-type">Price Concern</div>
+          <div class="pushback-quote">&#8220;It&#8217;s too expensive.&#8221;</div>
+          <div class="pushback-meta"><strong>Usually about:</strong> value, budget, comparison, or confidence in the
+            result.</div>
+          <div class="pushback-detail">The client may not be saying the price is absolutely too high &#8212; they may be
+            saying the value is not yet clear enough to justify the cost.<br><span class="pushback-move">First move:
+              clarify what &#8220;expensive&#8221; means</span></div>
+        </div>
+        <div class="pushback-card" onclick="togglePushback(this)">
+          <div class="pushback-type">Timing Concern</div>
+          <div class="pushback-quote">&#8220;Now isn&#8217;t the right time.&#8221;</div>
+          <div class="pushback-meta"><strong>Usually about:</strong> priority, urgency, workload, or internal process.
+          </div>
+          <div class="pushback-detail">Timing objections often mask a priority concern. The question is whether the
+            client sees this as important enough to act on now.<br><span class="pushback-move">First move: ask what
+              would make it a better time</span></div>
+        </div>
+        <div class="pushback-card" onclick="togglePushback(this)">
+          <div class="pushback-type">Existing Provider</div>
+          <div class="pushback-quote">&#8220;We already use another provider.&#8221;</div>
+          <div class="pushback-meta"><strong>Usually about:</strong> comfort, switching cost, or unclear difference.
+          </div>
+          <div class="pushback-detail">The goal is not to attack their current provider &#8212; it is to understand
+            whether the current setup fully solves their problem.<br><span class="pushback-move">First move: ask what is
+              working and what is still missing</span></div>
+        </div>
+        <div class="pushback-card" onclick="togglePushback(this)">
+          <div class="pushback-type">Send Me Information</div>
+          <div class="pushback-quote">&#8220;Can you just send me more information?&#8221;</div>
+          <div class="pushback-meta"><strong>Usually about:</strong> low commitment, unclear value, or avoiding a
+            decision.</div>
+          <div class="pushback-detail">This is often a polite way to end the conversation. Clarify what information
+            would actually help, not just agree to send something generic.<br><span class="pushback-move">First move:
+              clarify what information would actually help</span></div>
+        </div>
+        <div class="pushback-card" onclick="togglePushback(this)">
+          <div class="pushback-type">Need to Think</div>
+          <div class="pushback-quote">&#8220;I need to think about it.&#8221;</div>
+          <div class="pushback-meta"><strong>Usually about:</strong> hidden concern, uncertainty, or unclear decision
+            criteria.</div>
+          <div class="pushback-detail">There is almost always a specific reason behind this. The goal is to make it
+            easier for the client to name it by asking gently.<br><span class="pushback-move">First move: ask what they
+              need to think through</span></div>
+        </div>
+        <div class="pushback-card" onclick="togglePushback(this)">
+          <div class="pushback-type">Not Worth It</div>
+          <div class="pushback-quote">&#8220;I&#8217;m not sure it&#8217;s worth it.&#8221;</div>
+          <div class="pushback-meta"><strong>Usually about:</strong> unclear value, weak impact, or lack of proof.</div>
+          <div class="pushback-detail">The client may not yet see a clear connection between your solution and a
+            meaningful result for them. Make that connection explicit.<br><span class="pushback-move">First move:
+              connect the solution to the business result</span></div>
+        </div>
+        <div class="pushback-card" onclick="togglePushback(this)">
+          <div class="pushback-type">Internal Approval</div>
+          <div class="pushback-quote">&#8220;My manager/team may not agree.&#8221;</div>
+          <div class="pushback-meta"><strong>Usually about:</strong> stakeholder risk or internal justification.</div>
+          <div class="pushback-detail">The client may want to move forward but is worried about internal resistance.
+            Help them think through what their manager would need to see.<br><span class="pushback-move">First move: ask
+              what the team would need to see</span></div>
+        </div>
+      </div>
+      <div class="optional-q mt-20">
+        <div class="optional-q-label">Optional &#8212; quick questions</div>
+        <div class="optional-q-text">Which one is hardest to answer in English? &nbsp;&middot;&nbsp; What do you usually
+          say when this happens?</div>
+      </div>
+    </div>
+    <!-- PAGE 6: SKILL 1 -->
+    <div class="page" id="page-6">
+      <div class="skill-hero">
+        <div class="skill-number-badge">Skill 1 of 6</div>
+        <h1 class="skill-title">Slow the Moment Down</h1>
+        <div class="skill-key-move">Key Move: <span class="key-move-hl">Create space before answering.</span></div>
+      </div>
+      <div class="two-col">
+        <div>
+          <div class="info-block">
+            <div class="info-block-label">Why this matters</div>
+            <div class="info-block-text">When a client pushes back, many speakers respond too quickly. They defend,
+              over-explain, apologise, or offer solutions before they understand the concern. A short control phrase
+              helps you sound calmer and more professional.</div>
+          </div>
+          <div class="principle-block">
+            <div class="principle-icon"><svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                <path d="M7 2a3.5 3.5 0 0 1 2 6.4V10a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V8.4A3.5 3.5 0 0 1 7 2z"
+                  stroke="#C8843A" stroke-width="1.3" fill="none" />
+                <path d="M5.5 12h3" stroke="#C8843A" stroke-width="1.3" stroke-linecap="round" />
+              </svg></div>
+            <div class="principle-text">You do not need to answer immediately to sound confident.</div>
+          </div>
+        </div>
+        <div class="info-block">
+          <div class="info-block-label">Useful language</div>
+          <div class="phrase-chips">
+            <div class="phrase-chip">&#8220;That&#8217;s a fair question.&#8221;</div>
+            <div class="phrase-chip">&#8220;I understand why that matters.&#8221;</div>
+            <div class="phrase-chip">&#8220;Let me respond to that clearly.&#8221;</div>
+            <div class="phrase-chip">&#8220;Before I answer directly, can I clarify one thing?&#8221;</div>
+          </div>
+        </div>
+      </div>
+      <div class="info-block mt-14">
+        <div class="info-block-label">Weak &#8594; Stronger</div>
+        <div class="ws-grid">
+          <div class="ws-card weak">
+            <div class="ws-tag">Weak</div>
+            <div class="ws-text">&#8220;Yes, sorry, I understand. Maybe we can reduce the price.&#8221;</div>
+          </div>
+          <div class="ws-card strong">
+            <div class="ws-tag">Stronger</div>
+            <div class="ws-text">&#8220;I understand the concern. Before we talk about price, it may help to look at
+              what is included and what problem we&#8217;re trying to solve.&#8221;</div>
+          </div>
+        </div>
+      </div>
+      <div class="practice-section">
+        <div class="practice-tabs">
+          <div class="practice-tab active" onclick="switchTab(this,'p6-c')">Controlled</div>
+          <div class="practice-tab" onclick="switchTab(this,'p6-a')">Applied</div>
+          <div class="practice-tab" onclick="switchTab(this,'p6-r')">Make It More Realistic</div>
+        </div>
+        <div class="practice-pane active" id="p6-c">
+          <div class="practice-card">
+            <div class="practice-prompt">&#8220;It&#8217;s too expensive.&#8221;</div>
+            <div class="practice-task"><strong>Task:</strong> Respond with one calm opening phrase. Do not defend,
+              apologise, discount, or explain yet.</div>
+          </div>
+        </div>
+        <div class="practice-pane" id="p6-a">
+          <div class="practice-card">
+            <div class="practice-prompt">&#8220;This seems expensive compared with other options.&#8221;</div>
+            <div class="practice-task"><strong>Task:</strong> Start with a calm control phrase before giving any
+              explanation.</div>
+          </div>
+        </div>
+        <div class="practice-pane" id="p6-r">
+          <div class="practice-card">
+            <div class="practice-prompt">&#8220;Look, I just don&#8217;t think the price makes sense.&#8221;</div>
+            <div class="practice-task"><strong>Challenge:</strong> The client sounds impatient. Try again with a calm
+              opening that does not escalate.</div>
+          </div>
+        </div>
+      </div>
+      <div class="quick-recap">
+        <div class="recap-icon"><svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <circle cx="7" cy="7" r="5.5" stroke="white" stroke-width="1.3" opacity="0.6" />
+            <circle cx="7" cy="7" r="3" stroke="white" stroke-width="1.3" opacity="0.8" />
+            <circle cx="7" cy="7" r="1" fill="white" />
+          </svg></div>
+        <div>
+          <div class="recap-label">Quick Recap</div>
+          <div class="recap-text">A strong response often starts by slowing the moment down.</div>
+          <div class="recap-phrase">&#8220;Before I answer directly, can I clarify one thing?&#8221;</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAGE 7: SKILL 2 -->
+    <div class="page" id="page-7">
+      <div class="skill-hero">
+        <div class="skill-number-badge">Skill 2 of 6</div>
+        <h1 class="skill-title">Acknowledge Without Surrendering</h1>
+        <div class="skill-key-move">Key Move: <span class="key-move-hl">Show that you understand the concern without
+            giving up your position.</span></div>
+      </div>
+      <div class="two-col">
+        <div>
+          <div class="info-block">
+            <div class="info-block-label">Why this matters</div>
+            <div class="info-block-text">Acknowledging the client reduces tension. But if you apologise too much or
+              agree too quickly, you may weaken your message before you explain the value.</div>
+          </div>
+          <div class="principle-block">
+            <div class="principle-icon"><svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                <path d="M7 2a3.5 3.5 0 0 1 2 6.4V10a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V8.4A3.5 3.5 0 0 1 7 2z"
+                  stroke="#C8843A" stroke-width="1.3" fill="none" />
+                <path d="M5.5 12h3" stroke="#C8843A" stroke-width="1.3" stroke-linecap="round" />
+              </svg></div>
+            <div class="principle-text">You can understand the concern without agreeing that your offer is wrong.</div>
+          </div>
+        </div>
+        <div class="info-block">
+          <div class="info-block-label">Useful language</div>
+          <div class="phrase-chips">
+            <div class="phrase-chip">&#8220;I understand why that would be a concern.&#8221;</div>
+            <div class="phrase-chip">&#8220;That&#8217;s a reasonable point to raise.&#8221;</div>
+            <div class="phrase-chip">&#8220;I can see why you&#8217;d ask that.&#8221;</div>
+            <div class="phrase-chip">&#8220;That makes sense. Let&#8217;s look at it properly.&#8221;</div>
+          </div>
+        </div>
+      </div>
+      <div class="info-block mt-14">
+        <div class="info-block-label">Weak &#8594; Stronger</div>
+        <div class="ws-grid">
+          <div class="ws-card weak">
+            <div class="ws-tag">Weak</div>
+            <div class="ws-text">&#8220;Yes, I know it&#8217;s expensive. Sorry about that.&#8221;</div>
+          </div>
+          <div class="ws-card strong">
+            <div class="ws-tag">Stronger</div>
+            <div class="ws-text">&#8220;I understand why the price matters. The important question is whether the value
+              matches the problem you&#8217;re trying to solve.&#8221;</div>
+          </div>
+        </div>
+      </div>
+      <div class="practice-section">
+        <div class="practice-tabs">
+          <div class="practice-tab active" onclick="switchTab(this,'p7-c')">Controlled</div>
+          <div class="practice-tab" onclick="switchTab(this,'p7-a')">Applied</div>
+          <div class="practice-tab" onclick="switchTab(this,'p7-r')">Make It More Realistic</div>
+        </div>
+        <div class="practice-pane active" id="p7-c">
+          <div class="practice-card">
+            <div class="practice-prompt">&#8220;Your solution is more expensive than the others.&#8221;</div>
+            <div class="practice-task"><strong>Task:</strong> Acknowledge the objection without apologising.</div>
+          </div>
+        </div>
+        <div class="practice-pane" id="p7-a">
+          <div class="practice-card">
+            <div class="practice-prompt">&#8220;I&#8217;m not convinced this is worth the investment.&#8221;</div>
+            <div class="practice-task"><strong>Task:</strong> Acknowledge the concern while keeping your position
+              stable.</div>
+          </div>
+        </div>
+        <div class="practice-pane" id="p7-r">
+          <div class="practice-card">
+            <div class="practice-prompt">&#8220;Honestly, I expected it to be cheaper.&#8221;</div>
+            <div class="practice-task"><strong>Challenge:</strong> The client adds this after their first objection.
+              Acknowledge without over-apologising.</div>
+          </div>
+        </div>
+      </div>
+      <div class="quick-recap">
+        <div class="recap-icon"><svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <circle cx="7" cy="7" r="5.5" stroke="white" stroke-width="1.3" opacity="0.6" />
+            <circle cx="7" cy="7" r="3" stroke="white" stroke-width="1.3" opacity="0.8" />
+            <circle cx="7" cy="7" r="1" fill="white" />
+          </svg></div>
+        <div>
+          <div class="recap-label">Quick Recap</div>
+          <div class="recap-text">Acknowledgement is not surrender.</div>
+          <div class="recap-phrase">&#8220;I understand why that would be a concern.&#8221;</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAGE 8: SKILL 3 -->
+    <div class="page" id="page-8">
+      <div class="skill-hero">
+        <div class="skill-number-badge">Skill 3 of 6</div>
+        <h1 class="skill-title">Clarify the Real Concern</h1>
+        <div class="skill-key-move">Key Move: <span class="key-move-hl">Ask a question before giving the full
+            answer.</span></div>
+      </div>
+      <div class="two-col">
+        <div>
+          <div class="info-block">
+            <div class="info-block-label">Why this matters</div>
+            <div class="info-block-text">Many objections are unclear at first. &#8220;It&#8217;s too expensive&#8221;
+              could mean budget, unclear value, comparison with another option, weak timing, or low confidence in the
+              result. If you respond too quickly, you may answer the wrong objection.</div>
+          </div>
+          <div class="principle-block">
+            <div class="principle-icon"><svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                <path d="M7 2a3.5 3.5 0 0 1 2 6.4V10a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V8.4A3.5 3.5 0 0 1 7 2z"
+                  stroke="#C8843A" stroke-width="1.3" fill="none" />
+                <path d="M5.5 12h3" stroke="#C8843A" stroke-width="1.3" stroke-linecap="round" />
+              </svg></div>
+            <div class="principle-text">Clarify before you defend.</div>
+          </div>
+        </div>
+        <div class="info-block">
+          <div class="info-block-label">Useful language</div>
+          <div class="phrase-chips">
+            <div class="phrase-chip">&#8220;Can I clarify one thing first?&#8221;</div>
+            <div class="phrase-chip">&#8220;Is the main concern budget, timing, or value?&#8221;</div>
+            <div class="phrase-chip">&#8220;Are you comparing this with another option?&#8221;</div>
+            <div class="phrase-chip">&#8220;What would need to be clearer for this to feel worthwhile?&#8221;</div>
+            <div class="phrase-chip">&#8220;Is it more about cost, or confidence in the result?&#8221;</div>
+          </div>
+        </div>
+      </div>
+      <div class="info-block mt-14">
+        <div class="info-block-label">Weak &#8594; Stronger</div>
+        <div class="ws-grid">
+          <div class="ws-card weak">
+            <div class="ws-tag">Weak</div>
+            <div class="ws-text">&#8220;But our product is very good and we have many features.&#8221;</div>
+          </div>
+          <div class="ws-card strong">
+            <div class="ws-tag">Stronger</div>
+            <div class="ws-text">&#8220;Can I clarify whether the concern is the total price, or whether the value is
+              not clear enough yet?&#8221;</div>
+          </div>
+        </div>
+      </div>
+      <div class="practice-section">
+        <div class="practice-tabs">
+          <div class="practice-tab active" onclick="switchTab(this,'p8-c')">Controlled</div>
+          <div class="practice-tab" onclick="switchTab(this,'p8-a')">Applied</div>
+          <div class="practice-tab" onclick="switchTab(this,'p8-r')">Make It More Realistic</div>
+        </div>
+        <div class="practice-pane active" id="p8-c">
+          <div class="practice-card">
+            <div class="practice-prompt">&#8220;It&#8217;s too expensive.&#8221;</div>
+            <div class="practice-task"><strong>Task:</strong> Turn the objection into a clarification question.</div>
+            <div class="practice-options">
+              <div class="practice-opt" onclick="this.classList.toggle('selected')">&#8220;Is the concern the total
+                price or the return you expect?&#8221;</div>
+              <div class="practice-opt" onclick="this.classList.toggle('selected')">&#8220;Are you comparing this with
+                another option?&#8221;</div>
+              <div class="practice-opt" onclick="this.classList.toggle('selected')">&#8220;Is it more about budget or
+                confidence in the result?&#8221;</div>
+            </div>
+          </div>
+        </div>
+        <div class="practice-pane" id="p8-a">
+          <div class="practice-card">
+            <div class="practice-prompt">&#8220;I don&#8217;t know if this is the right time.&#8221;</div>
+            <div class="practice-task"><strong>Task:</strong> Ask one question to understand the real timing concern.
+            </div>
+          </div>
+        </div>
+        <div class="practice-pane" id="p8-r">
+          <div class="practice-card">
+            <div class="practice-prompt">&#8220;I don&#8217;t know. It just feels like a lot right now.&#8221;</div>
+            <div class="practice-task"><strong>Challenge:</strong> The client gives a vague answer. Ask one gentle
+              clarifying question that moves the conversation forward.</div>
+          </div>
+        </div>
+      </div>
+      <div class="quick-recap">
+        <div class="recap-icon"><svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <circle cx="7" cy="7" r="5.5" stroke="white" stroke-width="1.3" opacity="0.6" />
+            <circle cx="7" cy="7" r="3" stroke="white" stroke-width="1.3" opacity="0.8" />
+            <circle cx="7" cy="7" r="1" fill="white" />
+          </svg></div>
+        <div>
+          <div class="recap-label">Quick Recap</div>
+          <div class="recap-text">Good objection handling often starts with a question, not an answer.</div>
+          <div class="recap-phrase">&#8220;Can I clarify one thing first?&#8221;</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAGE 9: SKILL 4 -->
+    <div class="page" id="page-9">
+      <div class="skill-hero">
+        <div class="skill-number-badge">Skill 4 of 6</div>
+        <h1 class="skill-title">Reframe the Objection</h1>
+        <div class="skill-key-move">Key Move: <span class="key-move-hl">Shift the conversation from the surface
+            objection to the bigger business issue.</span></div>
+      </div>
+      <div class="two-col">
+        <div>
+          <div class="info-block">
+            <div class="info-block-label">Why this matters</div>
+            <div class="info-block-text">If you stay trapped inside the objection, the conversation can become
+              defensive. A reframe moves the focus back to value, fit, timing, priority, risk, or the cost of doing
+              nothing.</div>
+          </div>
+          <div class="principle-block">
+            <div class="principle-icon"><svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                <path d="M7 2a3.5 3.5 0 0 1 2 6.4V10a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V8.4A3.5 3.5 0 0 1 7 2z"
+                  stroke="#C8843A" stroke-width="1.3" fill="none" />
+                <path d="M5.5 12h3" stroke="#C8843A" stroke-width="1.3" stroke-linecap="round" />
+              </svg></div>
+            <div class="principle-text">Do not argue with the objection. Change the angle of the conversation.</div>
+          </div>
+        </div>
+        <div class="info-block">
+          <div class="info-block-label">Useful language</div>
+          <div class="phrase-chips">
+            <div class="phrase-chip">&#8220;The bigger question is&#8230;&#8221;</div>
+            <div class="phrase-chip">&#8220;The way I&#8217;d look at it is&#8230;&#8221;</div>
+            <div class="phrase-chip">&#8220;It may help to look at this in terms of&#8230;&#8221;</div>
+            <div class="phrase-chip">&#8220;Instead of looking only at the cost, I&#8217;d also consider&#8230;&#8221;
+            </div>
+            <div class="phrase-chip">&#8220;The real issue is whether this solves the problem you described.&#8221;
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="info-block mt-14">
+        <div class="info-block-label">Weak &#8594; Stronger</div>
+        <div class="ws-grid">
+          <div class="ws-card weak">
+            <div class="ws-tag">Weak</div>
+            <div class="ws-text">&#8220;No, it&#8217;s not expensive because we have many features.&#8221;</div>
+          </div>
+          <div class="ws-card strong">
+            <div class="ws-tag">Stronger</div>
+            <div class="ws-text">&#8220;I understand the price concern. The bigger question is whether the current
+              problem is costing you more than the solution would.&#8221;</div>
+          </div>
+        </div>
+      </div>
+      <div class="practice-section">
+        <div class="practice-tabs">
+          <div class="practice-tab active" onclick="switchTab(this,'p9-c')">Controlled</div>
+          <div class="practice-tab" onclick="switchTab(this,'p9-a')">Applied</div>
+          <div class="practice-tab" onclick="switchTab(this,'p9-r')">Make It More Realistic</div>
+        </div>
+        <div class="practice-pane active" id="p9-c">
+          <div class="practice-card">
+            <div class="practice-prompt">&#8220;It&#8217;s too expensive.&#8221;</div>
+            <div class="practice-task"><strong>Task:</strong> Reframe from price to value, problem, impact, or outcome.
+            </div>
+            <div class="practice-options">
+              <div class="practice-opt" onclick="this.classList.toggle('selected')">&#8220;The bigger question is
+                whether the cost of the problem is higher than the cost of solving it.&#8221;</div>
+              <div class="practice-opt" onclick="this.classList.toggle('selected')">&#8220;Instead of looking only at
+                price, I&#8217;d look at what this helps you improve or avoid.&#8221;</div>
+            </div>
+          </div>
+        </div>
+        <div class="practice-pane" id="p9-a">
+          <div class="practice-card">
+            <div class="practice-prompt">&#8220;We already have another provider.&#8221;</div>
+            <div class="practice-task"><strong>Task:</strong> Reframe from provider comparison to business result.</div>
+          </div>
+        </div>
+        <div class="practice-pane" id="p9-r">
+          <div class="practice-card">
+            <div class="practice-prompt">&#8220;Our current provider is cheaper.&#8221;</div>
+            <div class="practice-task"><strong>Challenge:</strong> The client makes a direct cost comparison. Reframe
+              without dismissing their point.</div>
+          </div>
+        </div>
+      </div>
+      <div class="quick-recap">
+        <div class="recap-icon"><svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <circle cx="7" cy="7" r="5.5" stroke="white" stroke-width="1.3" opacity="0.6" />
+            <circle cx="7" cy="7" r="3" stroke="white" stroke-width="1.3" opacity="0.8" />
+            <circle cx="7" cy="7" r="1" fill="white" />
+          </svg></div>
+        <div>
+          <div class="recap-label">Quick Recap</div>
+          <div class="recap-text">A reframe helps you avoid defending every detail.</div>
+          <div class="recap-phrase">&#8220;The bigger question is&#8230;&#8221;</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAGE 10: SKILL 5 -->
+    <div class="page" id="page-10">
+      <div class="skill-hero">
+        <div class="skill-number-badge">Skill 5 of 6</div>
+        <h1 class="skill-title">Respond With Value</h1>
+        <div class="skill-key-move">Key Move: <span class="key-move-hl">Connect your answer back to the client&#8217;s
+            problem, desired result, or business impact.</span></div>
+      </div>
+      <div class="two-col">
+        <div>
+          <div class="info-block">
+            <div class="info-block-label">Why this matters</div>
+            <div class="info-block-text">A weak objection response explains features. A stronger response explains why
+              the solution matters. The client needs a reason to believe the value is worth the cost, time, or effort.
+            </div>
+          </div>
+          <div class="principle-block">
+            <div class="principle-icon"><svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                <path d="M7 2a3.5 3.5 0 0 1 2 6.4V10a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V8.4A3.5 3.5 0 0 1 7 2z"
+                  stroke="#C8843A" stroke-width="1.3" fill="none" />
+                <path d="M5.5 12h3" stroke="#C8843A" stroke-width="1.3" stroke-linecap="round" />
+              </svg></div>
+            <div class="principle-text">Do not just explain what it is. Explain why it matters.</div>
+          </div>
+        </div>
+        <div class="info-block">
+          <div class="info-block-label">Useful language</div>
+          <div class="phrase-chips">
+            <div class="phrase-chip">&#8220;The value here is&#8230;&#8221;</div>
+            <div class="phrase-chip">&#8220;This matters because&#8230;&#8221;</div>
+            <div class="phrase-chip">&#8220;Based on what you described, this would help by&#8230;&#8221;</div>
+            <div class="phrase-chip">&#8220;The main benefit is not just ___, but ___.&#8221;</div>
+            <div class="phrase-chip">&#8220;This is designed to reduce / improve / prevent&#8230;&#8221;</div>
+          </div>
+        </div>
+      </div>
+      <div class="info-block mt-14">
+        <div class="info-block-label">Weak &#8594; Stronger</div>
+        <div class="ws-grid">
+          <div class="ws-card weak">
+            <div class="ws-tag">Weak</div>
+            <div class="ws-text">&#8220;We have good support and many features.&#8221;</div>
+          </div>
+          <div class="ws-card strong">
+            <div class="ws-tag">Stronger</div>
+            <div class="ws-text">&#8220;The value is that your team would spend less time managing this manually, which
+              means fewer delays and more consistent follow-up.&#8221;</div>
+          </div>
+        </div>
+      </div>
+      <div class="practice-section">
+        <div class="practice-tabs">
+          <div class="practice-tab active" onclick="switchTab(this,'p10-c')">Controlled</div>
+          <div class="practice-tab" onclick="switchTab(this,'p10-a')">Applied</div>
+          <div class="practice-tab" onclick="switchTab(this,'p10-r')">Make It More Realistic</div>
+        </div>
+        <div class="practice-pane active" id="p10-c">
+          <div class="practice-card">
+            <div class="practice-prompt">Feature: &#8220;We provide weekly reporting.&#8221;</div>
+            <div class="practice-task"><strong>Task:</strong> Turn this feature into a value statement. Start with
+              &#8220;The value of weekly reporting is that&#8230;&#8221;</div>
+          </div>
+        </div>
+        <div class="practice-pane" id="p10-a">
+          <div class="practice-card">
+            <div class="practice-prompt">&#8220;I&#8217;m not sure this is worth it.&#8221;</div>
+            <div class="practice-task"><strong>Task:</strong> Respond by connecting the solution to a problem or
+              result.<br><br>Useful structure: <em>&#8220;The value depends on ___. If the main issue is ___, then this
+                helps by ___.&#8221;</em></div>
+          </div>
+        </div>
+        <div class="practice-pane" id="p10-r">
+          <div class="practice-card">
+            <div class="practice-prompt">&#8220;Can you explain that in simple terms?&#8221;</div>
+            <div class="practice-task"><strong>Challenge:</strong> The client asks for simplicity. Restate the value
+              without jargon or over-explaining.</div>
+          </div>
+        </div>
+      </div>
+      <div class="quick-recap">
+        <div class="recap-icon"><svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <circle cx="7" cy="7" r="5.5" stroke="white" stroke-width="1.3" opacity="0.6" />
+            <circle cx="7" cy="7" r="3" stroke="white" stroke-width="1.3" opacity="0.8" />
+            <circle cx="7" cy="7" r="1" fill="white" />
+          </svg></div>
+        <div>
+          <div class="recap-label">Quick Recap</div>
+          <div class="recap-text">Value is not just what the product does. Value is what changes for the client.</div>
+          <div class="recap-phrase">&#8220;The value here is&#8230;&#8221;</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAGE 11: SKILL 6 -->
+    <div class="page" id="page-11">
+      <div class="skill-hero">
+        <div class="skill-number-badge">Skill 6 of 6</div>
+        <h1 class="skill-title">Move the Conversation Forward</h1>
+        <div class="skill-key-move">Key Move: <span class="key-move-hl">End the objection response with a next
+            step.</span></div>
+      </div>
+      <div class="two-col">
+        <div>
+          <div class="info-block">
+            <div class="info-block-label">Why this matters</div>
+            <div class="info-block-text">A good objection response should not only explain. It should lead somewhere. If
+              the conversation ends with &#8220;Okay, I&#8217;ll think about it,&#8221; momentum can disappear.</div>
+          </div>
+          <div class="principle-block">
+            <div class="principle-icon"><svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                <path d="M7 2a3.5 3.5 0 0 1 2 6.4V10a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V8.4A3.5 3.5 0 0 1 7 2z"
+                  stroke="#C8843A" stroke-width="1.3" fill="none" />
+                <path d="M5.5 12h3" stroke="#C8843A" stroke-width="1.3" stroke-linecap="round" />
+              </svg></div>
+            <div class="principle-text">Do not let the objection become the end of the conversation.</div>
+          </div>
+        </div>
+        <div class="info-block">
+          <div class="info-block-label">Useful language</div>
+          <div class="phrase-chips">
+            <div class="phrase-chip">&#8220;The next logical step would be&#8230;&#8221;</div>
+            <div class="phrase-chip">&#8220;Would it make sense to&#8230;?&#8221;</div>
+            <div class="phrase-chip">&#8220;What would you need to see before deciding?&#8221;</div>
+            <div class="phrase-chip">&#8220;Can we agree on what you&#8217;d need to feel comfortable moving
+              forward?&#8221;</div>
+            <div class="phrase-chip">&#8220;Would it be useful to schedule a brief follow-up?&#8221;</div>
+          </div>
+        </div>
+      </div>
+      <div class="info-block mt-14">
+        <div class="info-block-label">Weak &#8594; Stronger</div>
+        <div class="ws-grid">
+          <div class="ws-card weak">
+            <div class="ws-tag">Weak</div>
+            <div class="ws-text">&#8220;Okay, no problem. Let me know.&#8221;</div>
+          </div>
+          <div class="ws-card strong">
+            <div class="ws-tag">Stronger</div>
+            <div class="ws-text">&#8220;That makes sense. What would you need to review before deciding whether this is
+              worth moving forward?&#8221;</div>
+          </div>
+        </div>
+      </div>
+      <div class="practice-section">
+        <div class="practice-tabs">
+          <div class="practice-tab active" onclick="switchTab(this,'p11-c')">Controlled</div>
+          <div class="practice-tab" onclick="switchTab(this,'p11-a')">Applied</div>
+          <div class="practice-tab" onclick="switchTab(this,'p11-r')">Make It More Realistic</div>
+        </div>
+        <div class="practice-pane active" id="p11-c">
+          <div class="practice-card">
+            <div class="practice-prompt">&#8220;I understand the price concern. The value depends on how much time and
+              cost this problem is creating for your team.&#8221;</div>
+            <div class="practice-task"><strong>Task:</strong> Add a next step to this response.</div>
+            <div class="practice-options">
+              <div class="practice-opt" onclick="this.classList.toggle('selected')">&#8220;Would it make sense to
+                compare this with your current process?&#8221;</div>
+              <div class="practice-opt" onclick="this.classList.toggle('selected')">&#8220;What would you need to see
+                before deciding?&#8221;</div>
+              <div class="practice-opt" onclick="this.classList.toggle('selected')">&#8220;Would a short follow-up be
+                useful after you&#8217;ve reviewed the numbers?&#8221;</div>
+            </div>
+          </div>
+        </div>
+        <div class="practice-pane" id="p11-a">
+          <div class="practice-card">
+            <div class="practice-prompt">&#8220;Can you just send me more information?&#8221;</div>
+            <div class="practice-task"><strong>Task:</strong> Avoid a dead follow-up. Create a clearer, more specific
+              next step.</div>
+          </div>
+        </div>
+        <div class="practice-pane" id="p11-r">
+          <div class="practice-card">
+            <div class="practice-prompt">&#8220;I don&#8217;t want another meeting unless there&#8217;s a clear
+              reason.&#8221;</div>
+            <div class="practice-task"><strong>Challenge:</strong> The client resists a next step. Propose one that
+              gives them a specific reason to say yes.</div>
+          </div>
+        </div>
+      </div>
+      <div class="quick-recap">
+        <div class="recap-icon"><svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <circle cx="7" cy="7" r="5.5" stroke="white" stroke-width="1.3" opacity="0.6" />
+            <circle cx="7" cy="7" r="3" stroke="white" stroke-width="1.3" opacity="0.8" />
+            <circle cx="7" cy="7" r="1" fill="white" />
+          </svg></div>
+        <div>
+          <div class="recap-label">Quick Recap</div>
+          <div class="recap-text">The goal is not just to answer. The goal is to keep the conversation moving.</div>
+          <div class="recap-phrase">&#8220;What would you need to see to feel comfortable moving forward?&#8221;</div>
+        </div>
+      </div>
+    </div>
+    <!-- PAGE 12: PUT IT TOGETHER -->
+    <div class="page" id="page-12">
+      <div class="page-eyebrow">Integration</div>
+      <h1 class="page-title">Put It Together</h1>
+      <p class="page-subtitle">Combine the full objection response sequence. You do not need to use every step every
+        time &#8212; but this gives you a reliable path when the conversation gets difficult.</p>
+      <div class="two-col mt-8">
+        <div>
+          <div class="section-label mb-8">Full Sequence</div>
+          <div class="sequence-steps">
+            <div class="seq-step">
+              <div class="seq-line-col">
+                <div class="seq-dot">1</div>
+                <div class="seq-connector"></div>
+              </div>
+              <div class="seq-content">
+                <div class="seq-label">Acknowledge</div>
+                <div class="seq-phrase">&#8220;I understand why that would be a concern.&#8221;</div>
+              </div>
+            </div>
+            <div class="seq-step">
+              <div class="seq-line-col">
+                <div class="seq-dot">2</div>
+                <div class="seq-connector"></div>
+              </div>
+              <div class="seq-content">
+                <div class="seq-label">Clarify</div>
+                <div class="seq-phrase">&#8220;Can I clarify whether the concern is budget, timing, or expected
+                  return?&#8221;</div>
+              </div>
+            </div>
+            <div class="seq-step">
+              <div class="seq-line-col">
+                <div class="seq-dot">3</div>
+                <div class="seq-connector"></div>
+              </div>
+              <div class="seq-content">
+                <div class="seq-label">Reframe</div>
+                <div class="seq-phrase">&#8220;The bigger question is whether this solves the problem you
+                  described.&#8221;</div>
+              </div>
+            </div>
+            <div class="seq-step">
+              <div class="seq-line-col">
+                <div class="seq-dot">4</div>
+                <div class="seq-connector"></div>
+              </div>
+              <div class="seq-content">
+                <div class="seq-label">Respond with Value</div>
+                <div class="seq-phrase">&#8220;The value here is that your team can reduce delays and avoid manual
+                  follow-up.&#8221;</div>
+              </div>
+            </div>
+            <div class="seq-step">
+              <div class="seq-line-col">
+                <div class="seq-dot" style="background:var(--teal);border-color:var(--teal);color:white">5</div>
+              </div>
+              <div class="seq-content">
+                <div class="seq-label">Move Forward</div>
+                <div class="seq-phrase">&#8220;Would it make sense to compare this with your current process?&#8221;
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="section-label mb-8">Choose a prompt to practise</div>
+          <div class="card card-sm">
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <div class="practice-opt" style="border-radius:var(--radius-sm);padding:10px 14px"
+                onclick="this.classList.toggle('selected')">&#8220;It&#8217;s too expensive.&#8221;</div>
+              <div class="practice-opt" style="border-radius:var(--radius-sm);padding:10px 14px"
+                onclick="this.classList.toggle('selected')">&#8220;We already have a provider.&#8221;</div>
+              <div class="practice-opt" style="border-radius:var(--radius-sm);padding:10px 14px"
+                onclick="this.classList.toggle('selected')">&#8220;Now isn&#8217;t the right time.&#8221;</div>
+              <div class="practice-opt" style="border-radius:var(--radius-sm);padding:10px 14px"
+                onclick="this.classList.toggle('selected')">&#8220;Just send me information.&#8221;</div>
+              <div class="practice-opt" style="border-radius:var(--radius-sm);padding:10px 14px"
+                onclick="this.classList.toggle('selected')">&#8220;I need to think about it.&#8221;</div>
+            </div>
+            <div style="margin-top:14px;font-size:13px;color:var(--muted)"><strong
+                style="color:var(--navy)">Task:</strong> Use the full sequence &#8212; acknowledge &#8594; clarify
+              &#8594; reframe &#8594; respond &#8594; move forward.</div>
+          </div>
+        </div>
+      </div>
+      <div class="full-example mt-20">
+        <div class="full-example-toggle" onclick="this.classList.toggle('open')">
+          <div>
+            <div class="toggle-label">Full Example &#8212; Price Concern</div>
+            <div class="toggle-sub">See a complete response using all five steps</div>
+          </div>
+          <div class="toggle-chevron"><svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+              <path d="M3 5l4 4 4-4" stroke="#6B7280" stroke-width="1.4" stroke-linecap="round"
+                stroke-linejoin="round" />
+            </svg></div>
+        </div>
+        <div class="full-example-body">
+          <div class="client-label">Client</div>
+          <div class="client-quote">&#8220;It&#8217;s too expensive.&#8221;</div>
+          <div class="client-label" style="margin-top:12px">Response</div>
+          <div class="response-text">&#8220;I understand why price matters. Can I clarify whether the concern is the
+            total price, or whether the value is not clear enough yet? The bigger question is whether this solves the
+            problem you described. If the main issue is time lost in manual follow-up, the value is that your team can
+            reduce delays and manage the process more consistently. Would it make sense to compare this with your
+            current process?&#8221;</div>
+        </div>
+      </div>
+      <div class="full-example mt-12">
+        <div class="full-example-toggle" onclick="this.classList.toggle('open')">
+          <div>
+            <div class="toggle-label">Full Example &#8212; Existing Provider</div>
+            <div class="toggle-sub">See a complete response using all five steps</div>
+          </div>
+          <div class="toggle-chevron"><svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+              <path d="M3 5l4 4 4-4" stroke="#6B7280" stroke-width="1.4" stroke-linecap="round"
+                stroke-linejoin="round" />
+            </svg></div>
+        </div>
+        <div class="full-example-body">
+          <div class="client-label">Client</div>
+          <div class="client-quote">&#8220;We already use another provider.&#8221;</div>
+          <div class="client-label" style="margin-top:12px">Response</div>
+          <div class="response-text">&#8220;That makes sense. Can I ask whether your current provider is fully solving
+            the issue, or whether there are still gaps you want to improve? The question may not be whether you already
+            have a provider, but whether the current setup is giving you the result you need. If there is still a gap,
+            it may be worth comparing where we approach it differently. Would it be useful to look at that comparison
+            briefly?&#8221;</div>
+        </div>
+      </div>
+      <div class="card mt-16" style="background:var(--amber-light);border-color:var(--amber-border)">
+        <div
+          style="font-size:13px;font-weight:700;color:var(--amber);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:6px">
+          Make It More Realistic</div>
+        <div style="font-size:14px;color:var(--navy)">Try the same practice again &#8212; but keep the response under 45
+          seconds.</div>
+      </div>
+    </div>
+
+    <!-- PAGE 13: LANGUAGE BANK -->
+    <div class="page" id="page-13">
+      <div class="page-eyebrow">Reference</div>
+      <h1 class="page-title">Language Bank</h1>
+      <p class="page-subtitle">Use this page as a reference when you need a phrase for a specific part of the response.
+        Tap a group to expand it.</p>
+      <div class="lang-accordion mt-8">
+        <div class="lang-group open">
+          <div class="lang-group-header" onclick="toggleLangGroup(this)">
+            <div><span class="lang-group-title">Acknowledging</span><span class="lang-group-count">5 phrases</span>
+            </div><svg class="lang-chevron" width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M4 6l4 4 4-4" stroke="#6B7280" stroke-width="1.4" stroke-linecap="round"
+                stroke-linejoin="round" />
+            </svg>
+          </div>
+          <div class="lang-group-body">
+            <div class="lang-phrase-list">
+              <div class="lang-phrase">&#8220;I understand why that matters.&#8221;</div>
+              <div class="lang-phrase">&#8220;That&#8217;s a fair concern.&#8221;</div>
+              <div class="lang-phrase">&#8220;I can see why you&#8217;d ask that.&#8221;</div>
+              <div class="lang-phrase">&#8220;That makes sense as a concern.&#8221;</div>
+              <div class="lang-phrase">&#8220;That&#8217;s a reasonable point to raise.&#8221;</div>
+            </div>
+          </div>
+        </div>
+        <div class="lang-group">
+          <div class="lang-group-header" onclick="toggleLangGroup(this)">
+            <div><span class="lang-group-title">Clarifying</span><span class="lang-group-count">5 phrases</span></div>
+            <svg class="lang-chevron" width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M4 6l4 4 4-4" stroke="#6B7280" stroke-width="1.4" stroke-linecap="round"
+                stroke-linejoin="round" />
+            </svg>
+          </div>
+          <div class="lang-group-body">
+            <div class="lang-phrase-list">
+              <div class="lang-phrase">&#8220;Can I clarify one thing first?&#8221;</div>
+              <div class="lang-phrase">&#8220;Is the main concern budget, timing, or value?&#8221;</div>
+              <div class="lang-phrase">&#8220;Are you comparing this with another option?&#8221;</div>
+              <div class="lang-phrase">&#8220;What would need to be clearer?&#8221;</div>
+              <div class="lang-phrase">&#8220;What would you need to see for this to feel worthwhile?&#8221;</div>
+            </div>
+          </div>
+        </div>
+        <div class="lang-group">
+          <div class="lang-group-header" onclick="toggleLangGroup(this)">
+            <div><span class="lang-group-title">Reframing</span><span class="lang-group-count">5 phrases</span></div>
+            <svg class="lang-chevron" width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M4 6l4 4 4-4" stroke="#6B7280" stroke-width="1.4" stroke-linecap="round"
+                stroke-linejoin="round" />
+            </svg>
+          </div>
+          <div class="lang-group-body">
+            <div class="lang-phrase-list">
+              <div class="lang-phrase">&#8220;The bigger question is&#8230;&#8221;</div>
+              <div class="lang-phrase">&#8220;The way I&#8217;d look at it is&#8230;&#8221;</div>
+              <div class="lang-phrase">&#8220;Instead of focusing only on ___, I&#8217;d also consider ___.&#8221;</div>
+              <div class="lang-phrase">&#8220;The real issue is whether ___.&#8221;</div>
+              <div class="lang-phrase">&#8220;The question is not just ___, but ___.&#8221;</div>
+            </div>
+          </div>
+        </div>
+        <div class="lang-group">
+          <div class="lang-group-header" onclick="toggleLangGroup(this)">
+            <div><span class="lang-group-title">Responding with Value</span><span class="lang-group-count">5
+                phrases</span></div><svg class="lang-chevron" width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M4 6l4 4 4-4" stroke="#6B7280" stroke-width="1.4" stroke-linecap="round"
+                stroke-linejoin="round" />
+            </svg>
+          </div>
+          <div class="lang-group-body">
+            <div class="lang-phrase-list">
+              <div class="lang-phrase">&#8220;The value here is&#8230;&#8221;</div>
+              <div class="lang-phrase">&#8220;This matters because&#8230;&#8221;</div>
+              <div class="lang-phrase">&#8220;Based on what you described, this would help by&#8230;&#8221;</div>
+              <div class="lang-phrase">&#8220;The main benefit is&#8230;&#8221;</div>
+              <div class="lang-phrase">&#8220;The reason this matters is&#8230;&#8221;</div>
+            </div>
+          </div>
+        </div>
+        <div class="lang-group">
+          <div class="lang-group-header" onclick="toggleLangGroup(this)">
+            <div><span class="lang-group-title">Holding Position Politely</span><span class="lang-group-count">4
+                phrases</span></div><svg class="lang-chevron" width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M4 6l4 4 4-4" stroke="#6B7280" stroke-width="1.4" stroke-linecap="round"
+                stroke-linejoin="round" />
+            </svg>
+          </div>
+          <div class="lang-group-body">
+            <div class="lang-phrase-list">
+              <div class="lang-phrase">&#8220;I understand the concern, but I wouldn&#8217;t look at it only in terms of
+                price.&#8221;</div>
+              <div class="lang-phrase">&#8220;I see your point, but there&#8217;s another factor to consider.&#8221;
+              </div>
+              <div class="lang-phrase">&#8220;That&#8217;s fair, but the value depends on the problem you&#8217;re
+                trying to solve.&#8221;</div>
+              <div class="lang-phrase">&#8220;I wouldn&#8217;t want to reduce the discussion to price alone.&#8221;
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="lang-group">
+          <div class="lang-group-header" onclick="toggleLangGroup(this)">
+            <div><span class="lang-group-title">Moving Forward</span><span class="lang-group-count">5 phrases</span>
+            </div><svg class="lang-chevron" width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M4 6l4 4 4-4" stroke="#6B7280" stroke-width="1.4" stroke-linecap="round"
+                stroke-linejoin="round" />
+            </svg>
+          </div>
+          <div class="lang-group-body">
+            <div class="lang-phrase-list">
+              <div class="lang-phrase">&#8220;The next logical step would be&#8230;&#8221;</div>
+              <div class="lang-phrase">&#8220;Would it make sense to&#8230;?&#8221;</div>
+              <div class="lang-phrase">&#8220;What would you need to see before deciding?&#8221;</div>
+              <div class="lang-phrase">&#8220;Can we agree on what the next step should be?&#8221;</div>
+              <div class="lang-phrase">&#8220;What would help you feel more comfortable moving forward?&#8221;</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="optional-q mt-16">
+        <div class="optional-q-label">Optional &#8212; quick question</div>
+        <div class="optional-q-text">Which phrase feels most natural for your real conversations?</div>
+      </div>
+    </div>
+
+    <!-- PAGE 14: PRACTICE PROMPT LIBRARY -->
+    <div class="page" id="page-14">
+      <div class="page-eyebrow">Practice</div>
+      <h1 class="page-title">Practice Prompts</h1>
+      <p class="page-subtitle">Choose a prompt and practise one skill or the full sequence. Tap a card to open it.</p>
+      <div class="prompt-library mt-8">
+        <div class="prompt-item">
+          <div class="prompt-header" onclick="togglePrompt(this)">
+            <div>
+              <div class="prompt-title">Prompt 1 &#8212; Price Concern</div>
+              <div class="prompt-quote">&#8220;It&#8217;s too expensive.&#8221;</div>
+            </div><svg class="prompt-chevron" width="18" height="18" viewBox="0 0 18 18" fill="none">
+              <path d="M4.5 7L9 11.5 13.5 7" stroke="#6B7280" stroke-width="1.5" stroke-linecap="round"
+                stroke-linejoin="round" />
+            </svg>
+          </div>
+          <div class="prompt-body">
+            <div style="font-size:13px;color:var(--muted);margin-bottom:12px">Choose one skill to practise, or use the
+              full sequence.</div>
+            <div class="prompt-options">
+              <div class="prompt-opt" onclick="this.classList.toggle('selected')">acknowledge only</div>
+              <div class="prompt-opt" onclick="this.classList.toggle('selected')">clarify the concern</div>
+              <div class="prompt-opt" onclick="this.classList.toggle('selected')">reframe to value</div>
+              <div class="prompt-opt" onclick="this.classList.toggle('selected')">respond with value</div>
+              <div class="prompt-opt" onclick="this.classList.toggle('selected')">move to next step</div>
+              <div class="prompt-opt" onclick="this.classList.toggle('selected')">full response</div>
+            </div>
+          </div>
+        </div>
+        <div class="prompt-item">
+          <div class="prompt-header" onclick="togglePrompt(this)">
+            <div>
+              <div class="prompt-title">Prompt 2 &#8212; Existing Provider</div>
+              <div class="prompt-quote">&#8220;We already use another provider.&#8221;</div>
+            </div><svg class="prompt-chevron" width="18" height="18" viewBox="0 0 18 18" fill="none">
+              <path d="M4.5 7L9 11.5 13.5 7" stroke="#6B7280" stroke-width="1.5" stroke-linecap="round"
+                stroke-linejoin="round" />
+            </svg>
+          </div>
+          <div class="prompt-body">
+            <div class="prompt-options">
+              <div class="prompt-opt" onclick="this.classList.toggle('selected')">ask a respectful follow-up question
+              </div>
+              <div class="prompt-opt" onclick="this.classList.toggle('selected')">reframe to results</div>
+              <div class="prompt-opt" onclick="this.classList.toggle('selected')">explain differentiation</div>
+              <div class="prompt-opt" onclick="this.classList.toggle('selected')">suggest a useful next step</div>
+              <div class="prompt-opt" onclick="this.classList.toggle('selected')">full response</div>
+            </div>
+          </div>
+        </div>
+        <div class="prompt-item">
+          <div class="prompt-header" onclick="togglePrompt(this)">
+            <div>
+              <div class="prompt-title">Prompt 3 &#8212; Timing Concern</div>
+              <div class="prompt-quote">&#8220;Now isn&#8217;t the right time.&#8221;</div>
+            </div><svg class="prompt-chevron" width="18" height="18" viewBox="0 0 18 18" fill="none">
+              <path d="M4.5 7L9 11.5 13.5 7" stroke="#6B7280" stroke-width="1.5" stroke-linecap="round"
+                stroke-linejoin="round" />
+            </svg>
+          </div>
+          <div class="prompt-body">
+            <div class="prompt-options">
+              <div class="prompt-opt" onclick="this.classList.toggle('selected')">clarify timing</div>
+              <div class="prompt-opt" onclick="this.classList.toggle('selected')">explore priority</div>
+              <div class="prompt-opt" onclick="this.classList.toggle('selected')">suggest a lighter next step</div>
+              <div class="prompt-opt" onclick="this.classList.toggle('selected')">connect timing to cost of delay</div>
+              <div class="prompt-opt" onclick="this.classList.toggle('selected')">full response</div>
+            </div>
+          </div>
+        </div>
+        <div class="prompt-item">
+          <div class="prompt-header" onclick="togglePrompt(this)">
+            <div>
+              <div class="prompt-title">Prompt 4 &#8212; Send Me Information</div>
+              <div class="prompt-quote">&#8220;Can you just send me more information?&#8221;</div>
+            </div><svg class="prompt-chevron" width="18" height="18" viewBox="0 0 18 18" fill="none">
+              <path d="M4.5 7L9 11.5 13.5 7" stroke="#6B7280" stroke-width="1.5" stroke-linecap="round"
+                stroke-linejoin="round" />
+            </svg>
+          </div>
+          <div class="prompt-body">
+            <div class="prompt-options">
+              <div class="prompt-opt" onclick="this.classList.toggle('selected')">avoid a dead follow-up</div>
+              <div class="prompt-opt" onclick="this.classList.toggle('selected')">clarify what information matters</div>
+              <div class="prompt-opt" onclick="this.classList.toggle('selected')">suggest a focused summary</div>
+              <div class="prompt-opt" onclick="this.classList.toggle('selected')">propose a follow-up reason</div>
+              <div class="prompt-opt" onclick="this.classList.toggle('selected')">full response</div>
+            </div>
+          </div>
+        </div>
+        <div class="prompt-item">
+          <div class="prompt-header" onclick="togglePrompt(this)">
+            <div>
+              <div class="prompt-title">Prompt 5 &#8212; Need to Think</div>
+              <div class="prompt-quote">&#8220;I need to think about it.&#8221;</div>
+            </div><svg class="prompt-chevron" width="18" height="18" viewBox="0 0 18 18" fill="none">
+              <path d="M4.5 7L9 11.5 13.5 7" stroke="#6B7280" stroke-width="1.5" stroke-linecap="round"
+                stroke-linejoin="round" />
+            </svg>
+          </div>
+          <div class="prompt-body">
+            <div class="prompt-options">
+              <div class="prompt-opt" onclick="this.classList.toggle('selected')">clarify what they need to think about
+              </div>
+              <div class="prompt-opt" onclick="this.classList.toggle('selected')">identify decision criteria</div>
+              <div class="prompt-opt" onclick="this.classList.toggle('selected')">ask what would help them decide</div>
+              <div class="prompt-opt" onclick="this.classList.toggle('selected')">create a clear next step</div>
+              <div class="prompt-opt" onclick="this.classList.toggle('selected')">full response</div>
+            </div>
+          </div>
+        </div>
+        <div class="prompt-item">
+          <div class="prompt-header" onclick="togglePrompt(this)">
+            <div>
+              <div class="prompt-title">Prompt 6 &#8212; Not Worth It</div>
+              <div class="prompt-quote">&#8220;I&#8217;m not sure this is worth it.&#8221;</div>
+            </div><svg class="prompt-chevron" width="18" height="18" viewBox="0 0 18 18" fill="none">
+              <path d="M4.5 7L9 11.5 13.5 7" stroke="#6B7280" stroke-width="1.5" stroke-linecap="round"
+                stroke-linejoin="round" />
+            </svg>
+          </div>
+          <div class="prompt-body">
+            <div class="prompt-options">
+              <div class="prompt-opt" onclick="this.classList.toggle('selected')">clarify the value concern</div>
+              <div class="prompt-opt" onclick="this.classList.toggle('selected')">connect to business impact</div>
+              <div class="prompt-opt" onclick="this.classList.toggle('selected')">reframe cost vs result</div>
+              <div class="prompt-opt" onclick="this.classList.toggle('selected')">ask what result would make it
+                worthwhile</div>
+              <div class="prompt-opt" onclick="this.classList.toggle('selected')">full response</div>
+            </div>
+          </div>
+        </div>
+        <div class="prompt-item">
+          <div class="prompt-header" onclick="togglePrompt(this)">
+            <div>
+              <div class="prompt-title">Prompt 7 &#8212; Internal Pushback</div>
+              <div class="prompt-quote">&#8220;My manager probably won&#8217;t approve this.&#8221;</div>
+            </div><svg class="prompt-chevron" width="18" height="18" viewBox="0 0 18 18" fill="none">
+              <path d="M4.5 7L9 11.5 13.5 7" stroke="#6B7280" stroke-width="1.5" stroke-linecap="round"
+                stroke-linejoin="round" />
+            </svg>
+          </div>
+          <div class="prompt-body">
+            <div class="prompt-options">
+              <div class="prompt-opt" onclick="this.classList.toggle('selected')">clarify the manager&#8217;s concern
+              </div>
+              <div class="prompt-opt" onclick="this.classList.toggle('selected')">help the client explain value
+                internally</div>
+              <div class="prompt-opt" onclick="this.classList.toggle('selected')">suggest what information would help
+              </div>
+              <div class="prompt-opt" onclick="this.classList.toggle('selected')">create a next step</div>
+              <div class="prompt-opt" onclick="this.classList.toggle('selected')">full response</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAGE 15: MAKE IT MORE REALISTIC -->
+    <div class="page" id="page-15">
+      <div class="page-eyebrow amber">Practice Upgrade</div>
+      <h1 class="page-title">Make It More Realistic</h1>
+      <p class="page-subtitle">Once the response is clear, try the same task with one extra difficulty. Add one
+        challenge at a time.</p>
+      <div class="challenge-grid mt-8">
+        <div class="challenge-card" onclick="this.classList.toggle('active')">
+          <div class="challenge-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M3 6a5 5 0 0 1 10 0c0 2-1 3.5-2.5 4.5V12H5.5v-1.5C4 9.5 3 8 3 6z" stroke="#C8843A"
+                stroke-width="1.3" fill="none" />
+              <path d="M6 14h4" stroke="#C8843A" stroke-width="1.3" stroke-linecap="round" />
+              <line x1="8" y1="3" x2="8" y2="5" stroke="#C8843A" stroke-width="1.3" stroke-linecap="round" />
+            </svg></div>
+          <div class="challenge-title">Short Answers</div>
+          <div class="challenge-quote">&#8220;Maybe. I&#8217;m not sure.&#8221;</div>
+        </div>
+        <div class="challenge-card" onclick="this.classList.toggle('active')">
+          <div class="challenge-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path
+                d="M6 8V4a1 1 0 0 1 2 0v4M6 8V6a1 1 0 0 0-2 0v3a5 5 0 0 0 5 5h1a4 4 0 0 0 4-4V8a1 1 0 0 0-2 0M6 8a1 1 0 0 1 2 0"
+                stroke="#C8843A" stroke-width="1.3" stroke-linecap="round" fill="none" />
+            </svg></div>
+          <div class="challenge-title">Interruption</div>
+          <div class="challenge-quote">&#8220;Yes, but that still sounds expensive.&#8221;</div>
+        </div>
+        <div class="challenge-card" onclick="this.classList.toggle('active')">
+          <div class="challenge-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <circle cx="8" cy="9" r="5.5" stroke="#C8843A" stroke-width="1.3" />
+              <path d="M8 6v3l2 1.5" stroke="#C8843A" stroke-width="1.3" stroke-linecap="round"
+                stroke-linejoin="round" />
+              <path d="M5.5 2.5l-2 1.5M10.5 2.5l2 1.5" stroke="#C8843A" stroke-width="1.3" stroke-linecap="round" />
+            </svg></div>
+          <div class="challenge-title">Time Limit</div>
+          <div class="challenge-quote">You only have 30 seconds to respond.</div>
+        </div>
+        <div class="challenge-card" onclick="this.classList.toggle('active')">
+          <div class="challenge-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <circle cx="8" cy="8" r="5.5" stroke="#C8843A" stroke-width="1.3" />
+              <path d="M6 6.5c0-1 .9-1.5 2-1.5s2 .7 2 1.5c0 1-1 1.5-2 2" stroke="#C8843A" stroke-width="1.3"
+                stroke-linecap="round" />
+              <circle cx="8" cy="11" r="0.75" fill="#C8843A" />
+            </svg></div>
+          <div class="challenge-title">Skeptical Tone</div>
+          <div class="challenge-quote">&#8220;I&#8217;ve heard that before.&#8221;</div>
+        </div>
+        <div class="challenge-card" onclick="this.classList.toggle('active')">
+          <div class="challenge-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <rect x="2" y="5" width="12" height="8" rx="1.5" stroke="#C8843A" stroke-width="1.3" />
+              <path d="M5 5V4a3 3 0 0 1 6 0v1" stroke="#C8843A" stroke-width="1.3" />
+              <circle cx="8" cy="9" r="1.5" stroke="#C8843A" stroke-width="1.3" />
+            </svg></div>
+          <div class="challenge-title">Price Too Early</div>
+          <div class="challenge-quote">&#8220;How much does it cost?&#8221; &#8212; before understanding the value.
+          </div>
+        </div>
+        <div class="challenge-card" onclick="this.classList.toggle('active')">
+          <div class="challenge-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M8 3v10M4 8h8M5 5l6 6M11 5l-6 6" stroke="#C8843A" stroke-width="1.3" stroke-linecap="round" />
+            </svg></div>
+          <div class="challenge-title">Provider Comparison</div>
+          <div class="challenge-quote">&#8220;Our current provider already does this.&#8221;</div>
+        </div>
+        <div class="challenge-card" onclick="this.classList.toggle('active')">
+          <div class="challenge-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <rect x="2.5" y="3.5" width="11" height="9" rx="1.5" stroke="#C8843A" stroke-width="1.3" />
+              <path d="M5 7h6M5 9.5h4" stroke="#C8843A" stroke-width="1.3" stroke-linecap="round" />
+            </svg></div>
+          <div class="challenge-title">Dead Follow-Up Risk</div>
+          <div class="challenge-quote">&#8220;Just send me something.&#8221;</div>
+        </div>
+        <div class="challenge-card" onclick="this.classList.toggle('active')">
+          <div class="challenge-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <rect x="3" y="5" width="10" height="8" rx="1" stroke="#C8843A" stroke-width="1.3" />
+              <path d="M6 5V4a2 2 0 0 1 4 0v1" stroke="#C8843A" stroke-width="1.3" />
+              <path d="M8 9v2" stroke="#C8843A" stroke-width="1.3" stroke-linecap="round" />
+            </svg></div>
+          <div class="challenge-title">Decision Delay</div>
+          <div class="challenge-quote">&#8220;Let me think about it and get back to you.&#8221;</div>
+        </div>
+      </div>
+      <div class="card mt-20">
+        <div class="section-label mb-8">How to use these</div>
+        <p style="font-size:14px;color:var(--navy);line-height:1.65;margin-bottom:12px">Choose one objection and one
+          challenge. Respond using either the current skill or the full framework.</p>
+        <div style="background:var(--bg);border-radius:var(--radius-sm);padding:14px 16px">
+          <div style="font-size:13px;color:var(--muted);margin-bottom:4px"><strong
+              style="color:var(--navy)">Objection:</strong> &#8220;It&#8217;s too expensive.&#8221;</div>
+          <div style="font-size:13px;color:var(--muted);margin-bottom:8px"><strong
+              style="color:var(--navy)">Challenge:</strong> The client interrupts and says, &#8220;I don&#8217;t have
+            time for a long explanation.&#8221;</div>
+          <div style="font-size:13px;color:var(--teal);font-weight:600">Task: Respond calmly and keep it short.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAGE 16: WHAT GOOD LOOKS LIKE -->
+    <div class="page" id="page-16">
+      <div class="page-eyebrow">Standard</div>
+      <h1 class="page-title">What Good Looks Like</h1>
+      <p class="page-subtitle">A strong objection response should feel calm, clear, and useful. There is no single
+        perfect answer &#8212; but strong objection handling usually includes a few clear qualities.</p>
+      <div class="good-list mt-8">
+        <div class="good-item">
+          <div class="good-num">1</div>
+          <div>
+            <div class="good-title">Calm opening</div>
+            <div class="good-phrase">&#8220;I understand why that would be a concern.&#8221; &#8212; The speaker does
+              not panic, apologise too much, or defend immediately.</div>
+          </div>
+        </div>
+        <div class="good-item">
+          <div class="good-num">2</div>
+          <div>
+            <div class="good-title">Clarification</div>
+            <div class="good-phrase">&#8220;Can I clarify whether the concern is cost, timing, or expected
+              return?&#8221; &#8212; The speaker checks what the objection really means.</div>
+          </div>
+        </div>
+        <div class="good-item">
+          <div class="good-num">3</div>
+          <div>
+            <div class="good-title">Value connection</div>
+            <div class="good-phrase">&#8220;The value here is that it helps reduce manual work and avoid delays.&#8221;
+              &#8212; The response connects back to the client&#8217;s real problem or desired result.</div>
+          </div>
+        </div>
+        <div class="good-item">
+          <div class="good-num">4</div>
+          <div>
+            <div class="good-title">Clear next step</div>
+            <div class="good-phrase">&#8220;Would it make sense to compare this with your current process?&#8221;
+              &#8212; The response keeps the conversation moving.</div>
+          </div>
+        </div>
+        <div class="good-item">
+          <div class="good-num">5</div>
+          <div>
+            <div class="good-title">Professional tone</div>
+            <div class="good-phrase">The speaker sounds steady, not defensive or desperate.</div>
+          </div>
+        </div>
+      </div>
+      <div class="card mt-20">
+        <div class="section-label mb-8">Strong response checklist</div>
+        <p style="font-size:13.5px;color:var(--muted);margin-bottom:14px">A strong response usually does at least three
+          of these:</p>
+        <div class="checklist">
+          <div class="checklist-item"><svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+              <path d="M2 6l3 3 5-5" stroke="#2D8F87" stroke-width="1.5" stroke-linecap="round"
+                stroke-linejoin="round" />
+            </svg>acknowledges the concern</div>
+          <div class="checklist-item"><svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+              <path d="M2 6l3 3 5-5" stroke="#2D8F87" stroke-width="1.5" stroke-linecap="round"
+                stroke-linejoin="round" />
+            </svg>asks a clarifying question</div>
+          <div class="checklist-item"><svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+              <path d="M2 6l3 3 5-5" stroke="#2D8F87" stroke-width="1.5" stroke-linecap="round"
+                stroke-linejoin="round" />
+            </svg>avoids over-apologising</div>
+          <div class="checklist-item"><svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+              <path d="M2 6l3 3 5-5" stroke="#2D8F87" stroke-width="1.5" stroke-linecap="round"
+                stroke-linejoin="round" />
+            </svg>explains value clearly</div>
+          <div class="checklist-item"><svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+              <path d="M2 6l3 3 5-5" stroke="#2D8F87" stroke-width="1.5" stroke-linecap="round"
+                stroke-linejoin="round" />
+            </svg>stays calm under pushback</div>
+          <div class="checklist-item"><svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+              <path d="M2 6l3 3 5-5" stroke="#2D8F87" stroke-width="1.5" stroke-linecap="round"
+                stroke-linejoin="round" />
+            </svg>suggests a next step</div>
+        </div>
+      </div>
+      <div class="mini-example mt-16">
+        <div class="mini-example-label">Example Strong Response</div>
+        <div class="client-label">Client</div>
+        <div class="client-quote">&#8220;I need to think about it.&#8221;</div>
+        <div class="client-label" style="margin-top:10px">Response</div>
+        <div class="response-text">&#8220;Of course. Can I ask what part you need to think through &#8212; the cost, the
+          timing, or whether it fits your current priorities? That will help me send you something useful instead of
+          just general information. If it makes sense, we can then decide whether a short follow-up conversation is
+          worth scheduling.&#8221;</div>
+      </div>
+      <div class="optional-q mt-16">
+        <div class="optional-q-label">Optional &#8212; quick question</div>
+        <div class="optional-q-text">Which part of this response sounds strongest: the clarification, the value, or the
+          next step?</div>
+      </div>
+    </div>
+
+    <!-- PAGE 17: COMPLETION -->
+    <div class="page" id="page-17">
+      <div class="completion-hero">
+        <div class="completion-badge"><svg width="36" height="36" viewBox="0 0 36 36" fill="none">
+            <path d="M8 18l6 6 14-14" stroke="white" stroke-width="2.5" stroke-linecap="round"
+              stroke-linejoin="round" />
+          </svg></div>
+        <h1 class="completion-title">Objection Handling<br>Complete</h1>
+        <p class="completion-sub">You&#8217;ve built a stronger way to handle client pushback.</p>
+      </div>
+      <div class="win-message">You added another layer to your client communication system.</div>
+      <div class="two-col">
+        <div class="card">
+          <div class="section-label mb-8">What you can do now</div>
+          <div class="can-do-list">
+            <div class="can-do-item">
+              <div class="can-do-check"><svg width="11" height="11" viewBox="0 0 11 11" fill="none">
+                  <path d="M2 5.5l2.5 2.5L9 3" stroke="#2D8F87" stroke-width="1.5" stroke-linecap="round"
+                    stroke-linejoin="round" />
+                </svg></div>Slow the moment down before responding
+            </div>
+            <div class="can-do-item">
+              <div class="can-do-check"><svg width="11" height="11" viewBox="0 0 11 11" fill="none">
+                  <path d="M2 5.5l2.5 2.5L9 3" stroke="#2D8F87" stroke-width="1.5" stroke-linecap="round"
+                    stroke-linejoin="round" />
+                </svg></div>Acknowledge the concern without giving up your position
+            </div>
+            <div class="can-do-item">
+              <div class="can-do-check"><svg width="11" height="11" viewBox="0 0 11 11" fill="none">
+                  <path d="M2 5.5l2.5 2.5L9 3" stroke="#2D8F87" stroke-width="1.5" stroke-linecap="round"
+                    stroke-linejoin="round" />
+                </svg></div>Clarify what the objection really means
+            </div>
+            <div class="can-do-item">
+              <div class="can-do-check"><svg width="11" height="11" viewBox="0 0 11 11" fill="none">
+                  <path d="M2 5.5l2.5 2.5L9 3" stroke="#2D8F87" stroke-width="1.5" stroke-linecap="round"
+                    stroke-linejoin="round" />
+                </svg></div>Reframe the conversation toward value or priority
+            </div>
+            <div class="can-do-item">
+              <div class="can-do-check"><svg width="11" height="11" viewBox="0 0 11 11" fill="none">
+                  <path d="M2 5.5l2.5 2.5L9 3" stroke="#2D8F87" stroke-width="1.5" stroke-linecap="round"
+                    stroke-linejoin="round" />
+                </svg></div>Respond without sounding defensive
+            </div>
+            <div class="can-do-item">
+              <div class="can-do-check"><svg width="11" height="11" viewBox="0 0 11 11" fill="none">
+                  <path d="M2 5.5l2.5 2.5L9 3" stroke="#2D8F87" stroke-width="1.5" stroke-linecap="round"
+                    stroke-linejoin="round" />
+                </svg></div>Move toward a clearer next step
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="completion-framework">
+            <div class="completion-framework-label">Core Framework</div>
+
+            <div class="completion-framework-list">
+              <div class="completion-framework-step">
+                <span class="completion-framework-dot">1</span>
+                <span class="completion-framework-name">Acknowledge</span>
+              </div>
+              <div class="completion-framework-step">
+                <span class="completion-framework-dot">2</span>
+                <span class="completion-framework-name">Clarify</span>
+              </div>
+              <div class="completion-framework-step">
+                <span class="completion-framework-dot">3</span>
+                <span class="completion-framework-name">Reframe</span>
+              </div>
+              <div class="completion-framework-step">
+                <span class="completion-framework-dot">4</span>
+                <span class="completion-framework-name">Respond</span>
+              </div>
+              <div class="completion-framework-step">
+                <span class="completion-framework-dot">5</span>
+                <span class="completion-framework-name">Move Forward</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card mt-14">
+        <div class="section-label mb-8">Optional reflection</div>
+        <div class="reflection-q">Which part feels most useful for your real conversations?</div>
+        <div class="reflection-q">Which phrase do you want to keep using?</div>
+        <div class="reflection-q" style="margin-bottom:0">Which objection should we practise more next time?</div>
+      </div>
+      <div style="margin-top:28px">
+        <div class="suggested-next-section">
+          <div class="section-label suggested-next-label">Suggested Next Modules</div>
+
+          <div class="next-modules">
+            <div class="next-module-card">
+              <div class="next-module-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                  <path d="M7 8.5C7 6.6 8.6 5 10.5 5S14 6.6 14 8.5 12.4 12 10.5 12 7 10.4 7 8.5Z" stroke="currentColor"
+                    stroke-width="1.6" />
+                  <path d="M14.5 10.5C16 10.5 17.2 9.3 17.2 7.8S16 5.1 14.5 5.1" stroke="currentColor"
+                    stroke-width="1.6" stroke-linecap="round" />
+                  <path d="M4.5 19C5.2 16.6 7.4 15 10.5 15S15.8 16.6 16.5 19" stroke="currentColor" stroke-width="1.6"
+                    stroke-linecap="round" />
+                  <path d="M16.5 15.2C18.2 15.7 19.4 17 19.8 19" stroke="currentColor" stroke-width="1.6"
+                    stroke-linecap="round" />
+                </svg>
+              </div>
+              <div class="next-module-content">
+                <div class="next-module-kicker">Next Path</div>
+                <div class="next-module-title">Negotiation and Difficult Conversations</div>
+                <div class="next-module-desc"><strong>Best for:</strong> pushback that turns into tension, disagreement,
+                  or difficult terms.</div>
+              </div>
+              <div class="next-module-arrow">→</div>
+            </div>
+
+            <div class="next-module-card">
+              <div class="next-module-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                  <path d="M12 3L20 9L12 21L4 9L12 3Z" stroke="currentColor" stroke-width="1.6"
+                    stroke-linejoin="round" />
+                  <path d="M4 9H20" stroke="currentColor" stroke-width="1.6" />
+                  <path d="M9 9L12 21L15 9" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" />
+                </svg>
+              </div>
+              <div class="next-module-content">
+                <div class="next-module-kicker">Next Path</div>
+                <div class="next-module-title">Explaining Value Clearly</div>
+                <div class="next-module-desc"><strong>Best for:</strong> objections that happen because the client does
+                  not fully understand the value yet.</div>
+              </div>
+              <div class="next-module-arrow">→</div>
+            </div>
+
+            <div class="next-module-card">
+              <div class="next-module-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                  <path d="M5 6.5H19" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+                  <path d="M5 12H15" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+                  <path d="M5 17.5H12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+                  <path d="M17 15L20 18L17 21" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"
+                    stroke-linejoin="round" />
+                </svg>
+              </div>
+              <div class="next-module-content">
+                <div class="next-module-kicker">Next Path</div>
+                <div class="next-module-title">Follow-Up and Next Steps</div>
+                <div class="next-module-desc"><strong>Best for:</strong> momentum that disappears after the call or
+                  after the objection.</div>
+              </div>
+              <div class="next-module-arrow">→</div>
+            </div>
+
+            <div class="next-module-card">
+              <div class="next-module-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                  <path d="M13 3L5 14H11L10 21L19 9H13L13 3Z" stroke="currentColor" stroke-width="1.6"
+                    stroke-linejoin="round" />
+                </svg>
+              </div>
+              <div class="next-module-content">
+                <div class="next-module-kicker">Next Path</div>
+                <div class="next-module-title">Fluency Under Pressure</div>
+                <div class="next-module-desc"><strong>Best for:</strong> freezing, hesitation, or fast follow-up
+                  questions.</div>
+              </div>
+              <div class="next-module-arrow">→</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="text-align:center;margin-top:32px">
+        <button class="btn-teal" onclick="goToPage(18)">Bonus Round <svg width="15" height="15" viewBox="0 0 15 15"
+            fill="none">
+            <path d="M3 7.5h9M8 3.5l4 4-4 4" stroke="white" stroke-width="1.5" stroke-linecap="round"
+              stroke-linejoin="round" />
+          </svg></button>
+        <div style="margin-top:10px;font-size:12.5px;color:var(--muted)">Optional &#8212; one more round if useful</div>
+      </div>
+    </div>
+
+    <!-- PAGE 18: BONUS ROUND -->
+    <div class="page" id="page-18">
+      <div class="page-eyebrow">Optional</div>
+      <h1 class="page-title">Bonus Round</h1>
+      <p class="page-subtitle">One extra practice round. Choose an option and practise the skill one more time. No new
+        theory &#8212; just one more useful round.</p>
+      <div class="bonus-cards mt-8">
+        <div class="bonus-card">
+          <div class="bonus-num">Option 1</div>
+          <div class="bonus-title">Different Objection</div>
+          <div class="bonus-desc">Use the same framework with a new type of pushback.</div>
+          <div class="bonus-options">
+            <div class="bonus-opt" onclick="this.classList.toggle('selected')">&#8220;It&#8217;s too expensive.&#8221;
+            </div>
+            <div class="bonus-opt" onclick="this.classList.toggle('selected')">&#8220;Now isn&#8217;t the right
+              time.&#8221;</div>
+            <div class="bonus-opt" onclick="this.classList.toggle('selected')">&#8220;We already use another
+              provider.&#8221;</div>
+            <div class="bonus-opt" onclick="this.classList.toggle('selected')">&#8220;Can you just send me more
+              information?&#8221;</div>
+            <div class="bonus-opt" onclick="this.classList.toggle('selected')">&#8220;I need to think about it.&#8221;
+            </div>
+          </div>
+          <div class="bonus-for" style="margin-top:12px">Best for: flexibility, structure, confidence</div>
+        </div>
+        <div class="bonus-card">
+          <div class="bonus-num">Option 2</div>
+          <div class="bonus-title">Different Client</div>
+          <div class="bonus-desc">Use the same objection with a different client type. Adjust your tone without losing
+            the structure.</div>
+          <div class="bonus-options">
+            <div class="bonus-opt" onclick="this.classList.toggle('selected')">senior decision-maker</div>
+            <div class="bonus-opt" onclick="this.classList.toggle('selected')">impatient client</div>
+            <div class="bonus-opt" onclick="this.classList.toggle('selected')">cautious buyer</div>
+            <div class="bonus-opt" onclick="this.classList.toggle('selected')">existing client</div>
+            <div class="bonus-opt" onclick="this.classList.toggle('selected')">internal stakeholder</div>
+          </div>
+          <div class="bonus-for" style="margin-top:12px">Best for: tone, adaptability, naturalness</div>
+        </div>
+        <div class="bonus-card">
+          <div class="bonus-num">Option 3</div>
+          <div class="bonus-title">Harder Final Round</div>
+          <div class="bonus-desc">Use the full framework with one added challenge. Stay calm, keep the structure, and
+            move the conversation forward.</div>
+          <div class="bonus-options">
+            <div class="bonus-opt" onclick="this.classList.toggle('selected')">the client interrupts</div>
+            <div class="bonus-opt" onclick="this.classList.toggle('selected')">the client gives short answers</div>
+            <div class="bonus-opt" onclick="this.classList.toggle('selected')">the client asks for a quick answer</div>
+            <div class="bonus-opt" onclick="this.classList.toggle('selected')">the client sounds skeptical</div>
+          </div>
+          <div class="bonus-for" style="margin-top:12px">Best for: realistic practice, control, confidence</div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- JUMP OVERLAY -->
+  <div class="jump-overlay" id="jumpOverlay" onclick="closeJump()"></div>
+
+  <!-- JUMP PANEL -->
+  <div class="jump-panel" id="jumpPanel">
+    <div class="jump-panel-inner">
+      <div class="jump-section-label">Start</div>
+      <div class="jump-links">
+        <button class="jump-link" onclick="jumpTo(1)"><span class="jump-link-title">Landing</span><span
+            class="jump-link-desc">Begin the module</span></button>
+        <button class="jump-link" onclick="jumpTo(2)"><span class="jump-link-title">Overview</span><span
+            class="jump-link-desc">What this module builds</span></button>
+        <button class="jump-link" onclick="jumpTo(3)"><span class="jump-link-title">Skill Path</span><span
+            class="jump-link-desc">See the skill progression</span></button>
+        <button class="jump-link" onclick="jumpTo(4)"><span class="jump-link-title">Core Framework</span><span
+            class="jump-link-desc">Learn the response structure</span></button>
+        <button class="jump-link" onclick="jumpTo(5)"><span class="jump-link-title">Pushback Map</span><span
+            class="jump-link-desc">Explore common objections</span></button>
+      </div>
+      <div class="jump-section-label">Skills</div>
+      <div class="jump-links">
+        <button class="jump-link" onclick="jumpTo(6)"><span class="jump-link-title">Skill 1 &#8212; Slow the Moment
+            Down</span><span class="jump-link-desc">Create space before answering.</span></button>
+        <button class="jump-link" onclick="jumpTo(7)"><span class="jump-link-title">Skill 2 &#8212; Acknowledge Without
+            Surrendering</span><span class="jump-link-desc">Show understanding without giving up your
+            position.</span></button>
+        <button class="jump-link" onclick="jumpTo(8)"><span class="jump-link-title">Skill 3 &#8212; Clarify the Real
+            Concern</span><span class="jump-link-desc">Ask a question before answering.</span></button>
+        <button class="jump-link" onclick="jumpTo(9)"><span class="jump-link-title">Skill 4 &#8212; Reframe the
+            Objection</span><span class="jump-link-desc">Shift from surface resistance to value, fit, or business
+            impact.</span></button>
+        <button class="jump-link" onclick="jumpTo(10)"><span class="jump-link-title">Skill 5 &#8212; Respond With
+            Value</span><span class="jump-link-desc">Connect the response to the client&#8217;s problem or
+            result.</span></button>
+        <button class="jump-link" onclick="jumpTo(11)"><span class="jump-link-title">Skill 6 &#8212; Move the
+            Conversation Forward</span><span class="jump-link-desc">End with a useful next step.</span></button>
+      </div>
+      <div class="jump-section-label">Practice &amp; Reference</div>
+      <div class="jump-links">
+        <button class="jump-link" onclick="jumpTo(12)"><span class="jump-link-title">Put It Together</span><span
+            class="jump-link-desc">Combine the full sequence</span></button>
+        <button class="jump-link" onclick="jumpTo(13)"><span class="jump-link-title">Language Bank</span><span
+            class="jump-link-desc">Find useful phrases</span></button>
+        <button class="jump-link" onclick="jumpTo(14)"><span class="jump-link-title">Practice Prompts</span><span
+            class="jump-link-desc">Choose focused practice</span></button>
+        <button class="jump-link" onclick="jumpTo(15)"><span class="jump-link-title">Make It More Realistic</span><span
+            class="jump-link-desc">Add one realistic challenge</span></button>
+        <button class="jump-link" onclick="jumpTo(16)"><span class="jump-link-title">What Good Looks Like</span><span
+            class="jump-link-desc">Review strong performance</span></button>
+      </div>
+      <div class="jump-section-label">Finish</div>
+      <div class="jump-links">
+        <button class="jump-link" onclick="jumpTo(17)"><span class="jump-link-title">Objection Handling
+            Complete</span><span class="jump-link-desc">Review what the student can now do</span></button>
+        <button class="jump-link" onclick="jumpTo(18)"><span class="jump-link-title">Bonus Round</span><span
+            class="jump-link-desc">Optional extra practice</span></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- BOTTOM BAR -->
+  <div class="bottom-bar hidden" id="bottomBar">
+    <div class="bottom-left">
+      <button class="btn-back" id="btnBack" onclick="handleBack()">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+          <path d="M9 3L5 7l4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+            stroke-linejoin="round" />
+        </svg>
+        Back
+      </button>
+      <span class="page-indicator" id="pageIndicator">Page 1 of 18</span>
+    </div>
+    <div class="bottom-right">
+      <button class="btn-jump" id="btnJump" onclick="toggleJump()">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+          <path d="M2 4h10M2 7h7M2 10h5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" />
+        </svg>
+        Jump to
+      </button>
+      <button class="btn-continue" id="btnContinue" onclick="handleContinue()">
+        Continue
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+          <path d="M5 3l4 4-4 4" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <script>
+    const TOTAL = 18;
+    let cur = 1;
+
+    function getSec(p) {
+      if (p <= 1) return 0;
+      if (p <= 4) return 1;
+      if (p <= 11) return 2;
+      if (p <= 15) return 3;
+      return 4;
+    }
+
+    function updateHeader(p) {
+      const s = getSec(p);
+      for (let i = 0; i < 5; i++) {
+        const step = document.getElementById('sec-' + i);
+        const conn = document.getElementById('conn-' + i);
+        step.classList.remove('active', 'done');
+        if (conn) conn.classList.remove('done');
+        if (i < s) { step.classList.add('done'); if (conn) conn.classList.add('done'); }
+        else if (i === s) step.classList.add('active');
+      }
+    }
+
+    function updateBar(p) {
+      const back = document.getElementById('btnBack');
+      const cont = document.getElementById('btnContinue');
+      const ind = document.getElementById('pageIndicator');
+      const bar = document.getElementById('bottomBar');
+
+      // Hide entire bottom bar on page 1
+      if (p === 1) {
+        bar.classList.add('hidden');
+      } else {
+        bar.classList.remove('hidden');
+        back.disabled = (p === 2); // back on p2 would go to p1 which is fine, but disable to keep clean
+        back.disabled = false;
+      }
+
+      ind.textContent = 'Page ' + p + ' of ' + TOTAL;
+
+      if (p === TOTAL) {
+        cont.style.display = 'none';
+      } else {
+        cont.style.display = 'inline-flex';
+        const lbl = p === 17 ? 'Bonus Round' : 'Continue';
+        cont.innerHTML = lbl + ' <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 3l4 4-4 4" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+      }
+
+      // Update jump panel current highlight
+      document.querySelectorAll('.jump-link').forEach(function (el) {
+        el.classList.remove('current');
+      });
+      const allLinks = document.querySelectorAll('.jump-link');
+      allLinks.forEach(function (el) {
+        const fn = el.getAttribute('onclick');
+        if (fn && fn.includes('jumpTo(' + p + ')')) { el.classList.add('current'); }
+      });
+    }
+
+    function goToPage(n) {
+      if (n < 1 || n > TOTAL) return;
+      document.getElementById('page-' + cur).classList.remove('active');
+      cur = n;
+      document.getElementById('page-' + cur).classList.add('active');
+      updateHeader(cur);
+      updateBar(cur);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function handleBack() { if (cur > 1) goToPage(cur - 1); }
+    function handleContinue() { if (cur < TOTAL) goToPage(cur + 1); }
+
+    // Jump menu
+    function toggleJump() {
+      const panel = document.getElementById('jumpPanel');
+      const overlay = document.getElementById('jumpOverlay');
+      const btn = document.getElementById('btnJump');
+      const isOpen = panel.classList.contains('open');
+      if (isOpen) {
+        panel.classList.remove('open');
+        overlay.classList.remove('open');
+        btn.classList.remove('open');
+      } else {
+        panel.classList.add('open');
+        overlay.classList.add('open');
+        btn.classList.add('open');
+      }
+    }
+
+    function closeJump() {
+      document.getElementById('jumpPanel').classList.remove('open');
+      document.getElementById('jumpOverlay').classList.remove('open');
+      document.getElementById('btnJump').classList.remove('open');
+    }
+
+    function jumpTo(n) {
+      closeJump();
+      goToPage(n);
+    }
+
+    function togglePushback(card) {
+      const was = card.classList.contains('active');
+      document.querySelectorAll('.pushback-card').forEach(c => c.classList.remove('active'));
+      if (!was) card.classList.add('active');
+    }
+
+    function switchTab(tab, paneId) {
+      const row = tab.closest('.practice-tabs');
+      row.querySelectorAll('.practice-tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      const sec = tab.closest('.practice-section');
+      sec.querySelectorAll('.practice-pane').forEach(p => p.classList.remove('active'));
+      const pane = document.getElementById(paneId);
+      if (pane) pane.classList.add('active');
+    }
+
+    function toggleLangGroup(header) {
+      header.closest('.lang-group').classList.toggle('open');
+    }
+
+    function togglePrompt(header) {
+      const item = header.closest('.prompt-item');
+      const was = item.classList.contains('open');
+      document.querySelectorAll('.prompt-item').forEach(i => i.classList.remove('open'));
+      if (!was) item.classList.add('open');
+    }
+
+    // Close jump panel on Escape
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') closeJump();
+    });
+
+    updateHeader(1);
+    updateBar(1);
+  </script>
+</body>
+
+</html>
