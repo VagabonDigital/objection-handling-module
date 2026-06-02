@@ -2195,6 +2195,160 @@
     .challenge-example p:last-child { margin-bottom: 0 }
     .challenge-example .task { color: var(--teal); font-weight: 600 }
 
+    /* ── MOBILE FIRST ───────────────────────────────────────────
+       Breakpoint: ≤ 540px (single-column phone)
+    ──────────────────────────────────────────────────────────── */
+    @media (max-width: 540px) {
+
+      /* ── Page content padding ─── */
+      .page-content {
+        padding: 24px 16px 90px
+      }
+
+      /* ── Top bar: hide subtitle to save space ─── */
+      .brand-sub {
+        display: none
+      }
+
+      /* ── Bottom bar ─────────────────────────────────────────
+         Tighter padding, smaller controls, truncate indicator  */
+      .bottom-bar {
+        padding: 0 12px;
+        height: 64px
+      }
+
+      .bottom-left {
+        gap: 6px;
+        flex-shrink: 1;
+        min-width: 0
+      }
+
+      .bottom-right {
+        gap: 8px;
+        flex-shrink: 0
+      }
+
+      .page-indicator {
+        font-size: 11px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 80px
+      }
+
+      .btn-back {
+        padding: 9px 12px;
+        font-size: 13px
+      }
+
+      .btn-jump {
+        padding: 9px 12px;
+        font-size: 13px
+      }
+
+      .btn-continue {
+        padding: 10px 16px;
+        font-size: 13.5px
+      }
+
+      /* ── Jump panel ─────────────────────────────────────────
+         Full viewport width, left-anchored, no translateX     */
+      .jump-panel {
+        bottom: 68px;
+        left: 8px;
+        right: 8px;
+        width: auto;
+        transform: none
+      }
+
+      /* ── Landing: flow pills ────────────────────────────────
+         Hide arrows; pills wrap as a compact centred cluster   */
+      .flow-visual {
+        gap: 6px;
+        margin: 20px 0 28px;
+        justify-content: center
+      }
+
+      .flow-arrow {
+        display: none
+      }
+
+      .flow-pill {
+        font-size: 12.5px;
+        padding: 7px 14px
+      }
+
+      /* ── Phrase chips ─── */
+      .phrase-chip {
+        font-size: 12.5px;
+        padding: 6px 12px
+      }
+
+      /* ── Practice tabs ──────────────────────────────────────
+         All three tabs on one line                             */
+      .practice-tabs {
+        flex-wrap: nowrap;
+        gap: 5px
+      }
+
+      .practice-tab {
+        font-size: 11.5px;
+        padding: 7px 11px;
+        white-space: nowrap
+      }
+
+      /* ── Memory bar ─────────────────────────────────────────
+         Stack pills as full-width block rows inside navy card  */
+      .memory-bar {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0;
+        padding: 20px
+      }
+
+      .memory-bar-label {
+        font-size: 11px;
+        letter-spacing: 0.1em;
+        color: rgba(255,255,255,0.48);
+        margin-bottom: 14px;
+        margin-right: 0
+      }
+
+      .memory-arrow {
+        display: none
+      }
+
+      .memory-pill {
+        display: block;
+        background: rgba(255,255,255,0.1);
+        border-radius: var(--radius-sm);
+        padding: 10px 14px;
+        font-size: 14px;
+        font-weight: 600;
+        color: white;
+        margin-bottom: 6px
+      }
+
+      .memory-pill:last-of-type {
+        margin-bottom: 0
+      }
+
+      /* ── Skill hero key-move text ─── */
+      .skill-key-move {
+        font-size: 13px
+      }
+
+      /* ── Page & hero titles ─── */
+      .page-title {
+        font-size: 26px
+      }
+
+      .hero-title {
+        font-size: clamp(30px, 9vw, 42px)
+      }
+
+    }
+
     /* ── PRINT / SAVE AS PDF (Quick Reference only) ────────── */
     @media print {
       .top-bar,
@@ -4066,13 +4220,30 @@
 
       <!-- Section 1: Framework -->
       <div class="section-label" style="margin-bottom:8px">Framework</div>
-      <div class="memory-bar" style="margin-top:0">
-        <span class="memory-bar-label">Remember</span>
-        <span class="memory-pill">Acknowledge</span><span class="memory-arrow">&#8594;</span>
-        <span class="memory-pill">Clarify</span><span class="memory-arrow">&#8594;</span>
-        <span class="memory-pill">Reframe</span><span class="memory-arrow">&#8594;</span>
-        <span class="memory-pill">Respond with Value</span><span class="memory-arrow">&#8594;</span>
-        <span class="memory-pill">Move Forward</span>
+      <div class="completion-framework" style="margin-top:0">
+        <div class="completion-framework-label">Core Framework</div>
+        <div class="completion-framework-list">
+          <div class="completion-framework-step">
+            <div class="completion-framework-dot">1</div>
+            <div class="completion-framework-name">Acknowledge</div>
+          </div>
+          <div class="completion-framework-step">
+            <div class="completion-framework-dot">2</div>
+            <div class="completion-framework-name">Clarify</div>
+          </div>
+          <div class="completion-framework-step">
+            <div class="completion-framework-dot">3</div>
+            <div class="completion-framework-name">Reframe</div>
+          </div>
+          <div class="completion-framework-step">
+            <div class="completion-framework-dot">4</div>
+            <div class="completion-framework-name">Respond with Value</div>
+          </div>
+          <div class="completion-framework-step">
+            <div class="completion-framework-dot">5</div>
+            <div class="completion-framework-name">Move Forward</div>
+          </div>
+        </div>
       </div>
 
       <!-- Section 2: Key Phrases -->
