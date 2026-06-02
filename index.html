@@ -4387,7 +4387,7 @@
         </svg>
         Back
       </button>
-      <span class="page-indicator" id="pageIndicator">Page 1 of 18</span>
+      <span class="page-indicator" id="pageIndicator">1 / 18</span>
     </div>
     <div class="bottom-right">
       <button class="btn-jump" id="btnJump" onclick="toggleJump()">
@@ -4470,7 +4470,7 @@
       if (quickRefActive) {
         ind.textContent = 'Quick Reference';
       } else {
-        ind.textContent = 'Page ' + p + ' of ' + TOTAL + ' · ' + PAGE_TITLES[p];
+        ind.textContent = p + ' / ' + TOTAL;
       }
 
       // Continue button
