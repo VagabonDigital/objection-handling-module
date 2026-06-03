@@ -263,6 +263,14 @@
       letter-spacing: 0.02em
     }
 
+    .page-count-mobile {
+      display: none;
+    }
+
+    .page-title-desktop {
+      display: inline;
+    }
+
     /* ── JUMP MENU ──────────────────────────────────────── */
     .btn-jump {
       display: inline-flex;
@@ -2155,32 +2163,97 @@
       margin-top: 20px
     }
 
-    .mb-8  { margin-bottom:  8px }
-    .mb-12 { margin-bottom: 12px }
-    .mb-14 { margin-bottom: 14px }
-    .mt-24 { margin-top: 24px }
-    .mt-28 { margin-top: 28px }
-    .mt-32 { margin-top: 32px }
+    .mb-8 {
+      margin-bottom: 8px
+    }
+
+    .mb-12 {
+      margin-bottom: 12px
+    }
+
+    .mb-14 {
+      margin-bottom: 14px
+    }
+
+    .mt-24 {
+      margin-top: 24px
+    }
+
+    .mt-28 {
+      margin-top: 28px
+    }
+
+    .mt-32 {
+      margin-top: 32px
+    }
 
     /* ── MODIFIER CLASSES ──────────────────────────────────── */
     /* Colour/variant overrides on existing components          */
-    .skill-num.teal     { background: var(--teal) }
-    .fw-num.teal        { background: var(--teal-pale); color: var(--teal) }
-    .seq-dot.final      { background: var(--teal); border-color: var(--teal); color: white }
-    .card.card-navy     { background: var(--navy); border-color: var(--navy) }
-    .card.card-amber    { background: var(--amber-light); border-color: var(--amber-border) }
-    .client-label.mt-10 { margin-top: 10px }
-    .client-label.mt-12 { margin-top: 12px }
-    .practice-opt.block { border-radius: var(--radius-sm); padding: 10px 14px }
-    .section-label.on-dark { color: rgba(255,255,255,0.5); margin-bottom: 8px }
-    .reflection-q.last  { margin-bottom: 0 }
-    .bonus-for.mt       { margin-top: 12px }
+    .skill-num.teal {
+      background: var(--teal)
+    }
+
+    .fw-num.teal {
+      background: var(--teal-pale);
+      color: var(--teal)
+    }
+
+    .seq-dot.final {
+      background: var(--teal);
+      border-color: var(--teal);
+      color: white
+    }
+
+    .card.card-navy {
+      background: var(--navy);
+      border-color: var(--navy)
+    }
+
+    .card.card-amber {
+      background: var(--amber-light);
+      border-color: var(--amber-border)
+    }
+
+    .client-label.mt-10 {
+      margin-top: 10px
+    }
+
+    .client-label.mt-12 {
+      margin-top: 12px
+    }
+
+    .practice-opt.block {
+      border-radius: var(--radius-sm);
+      padding: 10px 14px
+    }
+
+    .section-label.on-dark {
+      color: rgba(255, 255, 255, 0.5);
+      margin-bottom: 8px
+    }
+
+    .reflection-q.last {
+      margin-bottom: 0
+    }
+
+    .bonus-for.mt {
+      margin-top: 12px
+    }
 
     /* Tap hint (pushback map and similar instruction text) */
-    .tap-hint { font-size: 14px; color: var(--muted); margin-bottom: 20px; font-style: italic }
+    .tap-hint {
+      font-size: 14px;
+      color: var(--muted);
+      margin-bottom: 20px;
+      font-style: italic
+    }
 
     /* Prompt body hint */
-    .prompt-hint { font-size: 13px; color: var(--muted); margin-bottom: 12px }
+    .prompt-hint {
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 12px
+    }
 
     /* Completion page action group */
     .completion-actions {
@@ -2193,10 +2266,26 @@
     }
 
     /* Challenge example box (page 15) */
-    .challenge-example { background: var(--bg); border-radius: var(--radius-sm); padding: 14px 16px }
-    .challenge-example p { font-size: 13px; color: var(--muted); margin-bottom: 4px }
-    .challenge-example p:last-child { margin-bottom: 0 }
-    .challenge-example .task { color: var(--teal); font-weight: 600 }
+    .challenge-example {
+      background: var(--bg);
+      border-radius: var(--radius-sm);
+      padding: 14px 16px
+    }
+
+    .challenge-example p {
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 4px
+    }
+
+    .challenge-example p:last-child {
+      margin-bottom: 0
+    }
+
+    .challenge-example .task {
+      color: var(--teal);
+      font-weight: 600
+    }
 
     /* ── MOBILE FIRST ───────────────────────────────────────────
        Breakpoint: ≤ 540px (single-column phone)
@@ -2237,6 +2326,15 @@
         overflow: hidden;
         text-overflow: ellipsis;
         max-width: 80px
+      }
+
+      .page-count-desktop,
+      .page-title-desktop {
+        display: none;
+      }
+
+      .page-count-mobile {
+        display: inline;
       }
 
       .btn-back {
@@ -2312,7 +2410,7 @@
       .memory-bar-label {
         font-size: 11px;
         letter-spacing: 0.1em;
-        color: rgba(255,255,255,0.48);
+        color: rgba(255, 255, 255, 0.48);
         margin-bottom: 14px;
         margin-right: 0
       }
@@ -2323,7 +2421,7 @@
 
       .memory-pill {
         display: block;
-        background: rgba(255,255,255,0.1);
+        background: rgba(255, 255, 255, 0.1);
         border-radius: var(--radius-sm);
         padding: 10px 14px;
         font-size: 14px;
@@ -2354,100 +2452,141 @@
 
     /* ── PRINT / SAVE AS PDF (Quick Reference only) ────────── */
     @media print {
+
       .top-bar,
       .bottom-bar,
       .jump-overlay,
-      .jump-panel { display: none !important; }
+      .jump-panel {
+        display: none !important;
+      }
 
-      body { background: white; }
+      body {
+        background: white;
+      }
 
-      .page { display: none !important; }
-      #quick-reference { display: block !important; animation: none !important; }
+      .page {
+        display: none !important;
+      }
 
-      .page-content { padding: 24px; max-width: 100%; }
+      #quick-reference {
+        display: block !important;
+        animation: none !important;
+      }
 
-      .memory-bar { box-shadow: none; }
-      .good-item  { box-shadow: none; break-inside: avoid; }
-      .mini-example { break-inside: avoid; }
+      .page-content {
+        padding: 24px;
+        max-width: 100%;
+      }
+
+      .memory-bar {
+        box-shadow: none;
+      }
+
+      .good-item {
+        box-shadow: none;
+        break-inside: avoid;
+      }
+
+      .mini-example {
+        break-inside: avoid;
+      }
 
       /* Hide the print button itself when printing */
-      #qr-print-btn { display: none !important; }
+      #qr-print-btn {
+        display: none !important;
+      }
     }
   </style>
 </head>
 
 <body>
 
-<!-- ═══════════════════════════════════════════════════════════════
+  <!-- ═══════════════════════════════════════════════════════════════
      SVG ICON SYMBOL LIBRARY
      Usage: <svg width="W" height="H"><use href="#icon-NAME"/></svg>
      Colour inherits via currentColor — set on parent or svg element.
 ════════════════════════════════════════════════════════════════ -->
-<svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
-  <symbol id="icon-check" viewBox="0 0 10 10">
-    <path d="M2 5.5l2 2L8 3" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-  </symbol>
-  <symbol id="icon-check-lg" viewBox="0 0 11 11">
-    <path d="M2 5.5l2.5 2.5L9 3" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-  </symbol>
-  <symbol id="icon-check-sm" viewBox="0 0 12 12">
-    <path d="M2 6l3 3 5-5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-  </symbol>
-  <symbol id="icon-bulb" viewBox="0 0 14 14">
-    <path d="M7 2a3.5 3.5 0 0 1 2 6.4V10a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V8.4A3.5 3.5 0 0 1 7 2z" fill="none" stroke="currentColor" stroke-width="1.3"/>
-    <path d="M5.5 12h3" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
-  </symbol>
-  <symbol id="icon-target" viewBox="0 0 14 14">
-    <circle cx="7" cy="7" r="5.5" stroke="currentColor" stroke-width="1.3" opacity="0.6" fill="none"/>
-    <circle cx="7" cy="7" r="3"   stroke="currentColor" stroke-width="1.3" opacity="0.8" fill="none"/>
-    <circle cx="7" cy="7" r="1"   fill="currentColor"/>
-  </symbol>
-  <symbol id="icon-chevron-down" viewBox="0 0 16 16">
-    <path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
-  </symbol>
-  <symbol id="icon-chevron-down-sm" viewBox="0 0 14 14">
-    <path d="M3 5l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
-  </symbol>
-  <symbol id="icon-chevron-down-md" viewBox="0 0 18 18">
-    <path d="M4.5 7L9 11.5 13.5 7" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-  </symbol>
-  <symbol id="icon-arrow-right" viewBox="0 0 14 14">
-    <path d="M5 3l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-  </symbol>
-  <symbol id="icon-arrow-right-wide" viewBox="0 0 16 16">
-    <path d="M3 8h10M9 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-  </symbol>
-  <symbol id="icon-arrow-right-bonus" viewBox="0 0 15 15">
-    <path d="M3 7.5h9M8 3.5l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-  </symbol>
-  <symbol id="icon-arrow-left" viewBox="0 0 14 14">
-    <path d="M9 3L5 7l4 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-  </symbol>
-  <symbol id="icon-list" viewBox="0 0 14 14">
-    <path d="M2 4h10M2 7h7M2 10h5" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
-  </symbol>
-  <symbol id="icon-shield-check" viewBox="0 0 20 20">
-    <path d="M10 2L4 5v5c0 3.5 2.5 6.5 6 7.5C14.5 16.5 17 13.5 17 10V5L10 2z" fill="none" stroke="white" stroke-width="1.3" opacity="0.8"/>
-    <path d="M7.5 10l2 2 3-3" fill="none" stroke="#2D8F87" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-  </symbol>
-  <symbol id="icon-circle-check" viewBox="0 0 12 12">
-    <circle cx="6" cy="6" r="5" fill="none" stroke="currentColor" stroke-width="1.3"/>
-    <path d="M4 6l1.5 1.5L8 4" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
-  </symbol>
-  <symbol id="icon-print" viewBox="0 0 15 15">
-    <path d="M4 5V2h7v3M4 10H2V6h11v4h-2M4 10v3h7v-3" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
-  </symbol>
-  <symbol id="icon-doc-plus" viewBox="0 0 13 13">
-    <rect x="1.5" y="1.5" width="10" height="10" rx="2" fill="none" stroke="currentColor" stroke-width="1.3"/>
-    <path d="M4 6.5h5M6.5 4v5" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
-  </symbol>
-</svg>
+  <svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
+    <symbol id="icon-check" viewBox="0 0 10 10">
+      <path d="M2 5.5l2 2L8 3" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+        stroke-linejoin="round" />
+    </symbol>
+    <symbol id="icon-check-lg" viewBox="0 0 11 11">
+      <path d="M2 5.5l2.5 2.5L9 3" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+        stroke-linejoin="round" />
+    </symbol>
+    <symbol id="icon-check-sm" viewBox="0 0 12 12">
+      <path d="M2 6l3 3 5-5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+        stroke-linejoin="round" />
+    </symbol>
+    <symbol id="icon-bulb" viewBox="0 0 14 14">
+      <path d="M7 2a3.5 3.5 0 0 1 2 6.4V10a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V8.4A3.5 3.5 0 0 1 7 2z" fill="none"
+        stroke="currentColor" stroke-width="1.3" />
+      <path d="M5.5 12h3" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" />
+    </symbol>
+    <symbol id="icon-target" viewBox="0 0 14 14">
+      <circle cx="7" cy="7" r="5.5" stroke="currentColor" stroke-width="1.3" opacity="0.6" fill="none" />
+      <circle cx="7" cy="7" r="3" stroke="currentColor" stroke-width="1.3" opacity="0.8" fill="none" />
+      <circle cx="7" cy="7" r="1" fill="currentColor" />
+    </symbol>
+    <symbol id="icon-chevron-down" viewBox="0 0 16 16">
+      <path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"
+        stroke-linejoin="round" />
+    </symbol>
+    <symbol id="icon-chevron-down-sm" viewBox="0 0 14 14">
+      <path d="M3 5l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"
+        stroke-linejoin="round" />
+    </symbol>
+    <symbol id="icon-chevron-down-md" viewBox="0 0 18 18">
+      <path d="M4.5 7L9 11.5 13.5 7" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+        stroke-linejoin="round" />
+    </symbol>
+    <symbol id="icon-arrow-right" viewBox="0 0 14 14">
+      <path d="M5 3l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+        stroke-linejoin="round" />
+    </symbol>
+    <symbol id="icon-arrow-right-wide" viewBox="0 0 16 16">
+      <path d="M3 8h10M9 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"
+        stroke-linejoin="round" />
+    </symbol>
+    <symbol id="icon-arrow-right-bonus" viewBox="0 0 15 15">
+      <path d="M3 7.5h9M8 3.5l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+        stroke-linejoin="round" />
+    </symbol>
+    <symbol id="icon-arrow-left" viewBox="0 0 14 14">
+      <path d="M9 3L5 7l4 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+        stroke-linejoin="round" />
+    </symbol>
+    <symbol id="icon-list" viewBox="0 0 14 14">
+      <path d="M2 4h10M2 7h7M2 10h5" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" />
+    </symbol>
+    <symbol id="icon-shield-check" viewBox="0 0 20 20">
+      <path d="M10 2L4 5v5c0 3.5 2.5 6.5 6 7.5C14.5 16.5 17 13.5 17 10V5L10 2z" fill="none" stroke="white"
+        stroke-width="1.3" opacity="0.8" />
+      <path d="M7.5 10l2 2 3-3" fill="none" stroke="#2D8F87" stroke-width="1.6" stroke-linecap="round"
+        stroke-linejoin="round" />
+    </symbol>
+    <symbol id="icon-circle-check" viewBox="0 0 12 12">
+      <circle cx="6" cy="6" r="5" fill="none" stroke="currentColor" stroke-width="1.3" />
+      <path d="M4 6l1.5 1.5L8 4" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" />
+    </symbol>
+    <symbol id="icon-print" viewBox="0 0 15 15">
+      <path d="M4 5V2h7v3M4 10H2V6h11v4h-2M4 10v3h7v-3" fill="none" stroke="currentColor" stroke-width="1.4"
+        stroke-linecap="round" stroke-linejoin="round" />
+    </symbol>
+    <symbol id="icon-doc-plus" viewBox="0 0 13 13">
+      <rect x="1.5" y="1.5" width="10" height="10" rx="2" fill="none" stroke="currentColor" stroke-width="1.3" />
+      <path d="M4 6.5h5M6.5 4v5" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" />
+    </symbol>
+  </svg>
 
   <header class="top-bar">
     <div class="top-bar-inner">
       <div class="brand">
         <div class="brand-icon">
-          <svg width="20" height="20"><use href="#icon-shield-check"/></svg>
+          <svg width="20" height="20">
+            <use href="#icon-shield-check" />
+          </svg>
         </div>
         <div>
           <div class="brand-name">Objection Handling</div>
@@ -2483,7 +2622,9 @@
     <!-- PAGE 1 ─ LANDING ──────────────────────────────────────── -->
     <div class="page active" id="page-1">
       <div style="text-align:center;padding:20px 0 48px">
-        <div class="page-eyebrow"><svg width="12" height="12"><use href="#icon-circle-check"/></svg> Business Communication Module</div>
+        <div class="page-eyebrow"><svg width="12" height="12">
+            <use href="#icon-circle-check" />
+          </svg> Business Communication Module</div>
         <h1 class="hero-title" style="max-width:560px;margin:0 auto 16px"><em>Objection</em><br>Handling</h1>
         <p class="hero-sub" style="margin:0 auto 12px">Respond clearly and professionally when clients push back.</p>
         <p class="hero-body" style="margin:0 auto 36px">Build the structure, language, and confidence to handle
@@ -2541,22 +2682,34 @@
           <div class="section-label mb-8">You&#8217;ll build</div>
           <ul class="build-list">
             <li>
-              <div class="build-dot"><svg width="10" height="10" style="color:#2D8F87"><use href="#icon-check"/></svg></div>Calmer responses to client pushback
+              <div class="build-dot"><svg width="10" height="10" style="color:#2D8F87">
+                  <use href="#icon-check" />
+                </svg></div>Calmer responses to client pushback
             </li>
             <li>
-              <div class="build-dot"><svg width="10" height="10" style="color:#2D8F87"><use href="#icon-check"/></svg></div>Better clarification questions
+              <div class="build-dot"><svg width="10" height="10" style="color:#2D8F87">
+                  <use href="#icon-check" />
+                </svg></div>Better clarification questions
             </li>
             <li>
-              <div class="build-dot"><svg width="10" height="10" style="color:#2D8F87"><use href="#icon-check"/></svg></div>Less defensive language
+              <div class="build-dot"><svg width="10" height="10" style="color:#2D8F87">
+                  <use href="#icon-check" />
+                </svg></div>Less defensive language
             </li>
             <li>
-              <div class="build-dot"><svg width="10" height="10" style="color:#2D8F87"><use href="#icon-check"/></svg></div>Stronger value-based responses
+              <div class="build-dot"><svg width="10" height="10" style="color:#2D8F87">
+                  <use href="#icon-check" />
+                </svg></div>Stronger value-based responses
             </li>
             <li>
-              <div class="build-dot"><svg width="10" height="10" style="color:#2D8F87"><use href="#icon-check"/></svg></div>More control when the conversation becomes difficult
+              <div class="build-dot"><svg width="10" height="10" style="color:#2D8F87">
+                  <use href="#icon-check" />
+                </svg></div>More control when the conversation becomes difficult
             </li>
             <li>
-              <div class="build-dot"><svg width="10" height="10" style="color:#2D8F87"><use href="#icon-check"/></svg></div>Clearer movement toward the next step
+              <div class="build-dot"><svg width="10" height="10" style="color:#2D8F87">
+                  <use href="#icon-check" />
+                </svg></div>Clearer movement toward the next step
             </li>
           </ul>
         </div>
@@ -2792,7 +2945,9 @@
               opening phrase help you stay in control before you respond.</div>
           </div>
           <div class="principle-block">
-            <div class="principle-icon"><svg width="14" height="14" style="color:#C8843A"><use href="#icon-bulb"/></svg></div>
+            <div class="principle-icon"><svg width="14" height="14" style="color:#C8843A">
+                <use href="#icon-bulb" />
+              </svg></div>
             <div class="principle-text">You do not need to answer immediately to sound confident.</div>
           </div>
         </div>
@@ -2870,7 +3025,9 @@
         </div>
       </div>
       <div class="quick-recap">
-        <div class="recap-icon"><svg width="14" height="14" style="color:white"><use href="#icon-target"/></svg></div>
+        <div class="recap-icon"><svg width="14" height="14" style="color:white">
+            <use href="#icon-target" />
+          </svg></div>
         <div>
           <div class="recap-label">Quick Recap</div>
           <div class="recap-text">A strong response often starts by slowing the moment down.</div>
@@ -2895,7 +3052,9 @@
               is technically good. Acknowledging first shows that you heard the concern before you respond.</div>
           </div>
           <div class="principle-block">
-            <div class="principle-icon"><svg width="14" height="14" style="color:#C8843A"><use href="#icon-bulb"/></svg></div>
+            <div class="principle-icon"><svg width="14" height="14" style="color:#C8843A">
+                <use href="#icon-bulb" />
+              </svg></div>
             <div class="principle-text">You can understand the concern without agreeing that your offer is wrong.</div>
           </div>
         </div>
@@ -2972,7 +3131,9 @@
         </div>
       </div>
       <div class="quick-recap">
-        <div class="recap-icon"><svg width="14" height="14" style="color:white"><use href="#icon-target"/></svg></div>
+        <div class="recap-icon"><svg width="14" height="14" style="color:white">
+            <use href="#icon-target" />
+          </svg></div>
         <div>
           <div class="recap-label">Quick Recap</div>
           <div class="recap-text">Acknowledgement is not surrender.</div>
@@ -2998,7 +3159,9 @@
               result. If you respond too quickly, you may answer the wrong objection.</div>
           </div>
           <div class="principle-block">
-            <div class="principle-icon"><svg width="14" height="14" style="color:#C8843A"><use href="#icon-bulb"/></svg></div>
+            <div class="principle-icon"><svg width="14" height="14" style="color:#C8843A">
+                <use href="#icon-bulb" />
+              </svg></div>
             <div class="principle-text">Clarify before you defend.</div>
           </div>
         </div>
@@ -3084,7 +3247,9 @@
         </div>
       </div>
       <div class="quick-recap">
-        <div class="recap-icon"><svg width="14" height="14" style="color:white"><use href="#icon-target"/></svg></div>
+        <div class="recap-icon"><svg width="14" height="14" style="color:white">
+            <use href="#icon-target" />
+          </svg></div>
         <div>
           <div class="recap-label">Quick Recap</div>
           <div class="recap-text">Good objection handling often starts with a question, not an answer.</div>
@@ -3110,7 +3275,9 @@
               nothing.</div>
           </div>
           <div class="principle-block">
-            <div class="principle-icon"><svg width="14" height="14" style="color:#C8843A"><use href="#icon-bulb"/></svg></div>
+            <div class="principle-icon"><svg width="14" height="14" style="color:#C8843A">
+                <use href="#icon-bulb" />
+              </svg></div>
             <div class="principle-text">Do not argue with the objection. Change the angle of the conversation.</div>
           </div>
         </div>
@@ -3196,7 +3363,9 @@
         </div>
       </div>
       <div class="quick-recap">
-        <div class="recap-icon"><svg width="14" height="14" style="color:white"><use href="#icon-target"/></svg></div>
+        <div class="recap-icon"><svg width="14" height="14" style="color:white">
+            <use href="#icon-target" />
+          </svg></div>
         <div>
           <div class="recap-label">Quick Recap</div>
           <div class="recap-text">A reframe helps you avoid defending every detail.</div>
@@ -3222,7 +3391,9 @@
             </div>
           </div>
           <div class="principle-block">
-            <div class="principle-icon"><svg width="14" height="14" style="color:#C8843A"><use href="#icon-bulb"/></svg></div>
+            <div class="principle-icon"><svg width="14" height="14" style="color:#C8843A">
+                <use href="#icon-bulb" />
+              </svg></div>
             <div class="principle-text">Do not just explain what it is. Explain why it matters.</div>
           </div>
         </div>
@@ -3302,7 +3473,9 @@
         </div>
       </div>
       <div class="quick-recap">
-        <div class="recap-icon"><svg width="14" height="14" style="color:white"><use href="#icon-target"/></svg></div>
+        <div class="recap-icon"><svg width="14" height="14" style="color:white">
+            <use href="#icon-target" />
+          </svg></div>
         <div>
           <div class="recap-label">Quick Recap</div>
           <div class="recap-text">Value is not just what the product does. Value is what changes for the client.</div>
@@ -3327,7 +3500,9 @@
               the conversation ends with &#8220;Okay, I&#8217;ll think about it,&#8221; momentum can disappear.</div>
           </div>
           <div class="principle-block">
-            <div class="principle-icon"><svg width="14" height="14" style="color:#C8843A"><use href="#icon-bulb"/></svg></div>
+            <div class="principle-icon"><svg width="14" height="14" style="color:#C8843A">
+                <use href="#icon-bulb" />
+              </svg></div>
             <div class="principle-text">Do not let the objection become the end of the conversation.</div>
           </div>
         </div>
@@ -3416,7 +3591,9 @@
         </div>
       </div>
       <div class="quick-recap">
-        <div class="recap-icon"><svg width="14" height="14" style="color:white"><use href="#icon-target"/></svg></div>
+        <div class="recap-icon"><svg width="14" height="14" style="color:white">
+            <use href="#icon-target" />
+          </svg></div>
         <div>
           <div class="recap-label">Quick Recap</div>
           <div class="recap-text">The goal is not just to answer. The goal is to keep the conversation moving.</div>
@@ -3493,16 +3670,16 @@
           <div class="section-label mb-8">Choose a prompt to practise</div>
           <div class="card card-sm">
             <div style="display:flex;flex-direction:column;gap:8px">
-              <div class="practice-opt block"
-                onclick="this.classList.toggle('selected')">&#8220;It&#8217;s too expensive.&#8221;</div>
-              <div class="practice-opt block"
-                onclick="this.classList.toggle('selected')">&#8220;We already have a provider.&#8221;</div>
-              <div class="practice-opt block"
-                onclick="this.classList.toggle('selected')">&#8220;Now isn&#8217;t the right time.&#8221;</div>
-              <div class="practice-opt block"
-                onclick="this.classList.toggle('selected')">&#8220;Just send me information.&#8221;</div>
-              <div class="practice-opt block"
-                onclick="this.classList.toggle('selected')">&#8220;I need to think about it.&#8221;</div>
+              <div class="practice-opt block" onclick="this.classList.toggle('selected')">&#8220;It&#8217;s too
+                expensive.&#8221;</div>
+              <div class="practice-opt block" onclick="this.classList.toggle('selected')">&#8220;We already have a
+                provider.&#8221;</div>
+              <div class="practice-opt block" onclick="this.classList.toggle('selected')">&#8220;Now isn&#8217;t the
+                right time.&#8221;</div>
+              <div class="practice-opt block" onclick="this.classList.toggle('selected')">&#8220;Just send me
+                information.&#8221;</div>
+              <div class="practice-opt block" onclick="this.classList.toggle('selected')">&#8220;I need to think about
+                it.&#8221;</div>
             </div>
             <div style="margin-top:14px;font-size:13px;color:var(--muted)"><strong
                 style="color:var(--navy)">Task:</strong> Use the full sequence &#8212; acknowledge &#8594; clarify
@@ -3516,7 +3693,9 @@
             <div class="toggle-label">Full Example &#8212; Price Concern</div>
             <div class="toggle-sub">See a complete response using all five steps</div>
           </div>
-          <div class="toggle-chevron"><svg width="14" height="14" style="color:#6B7280"><use href="#icon-chevron-down-sm"/></svg></div>
+          <div class="toggle-chevron"><svg width="14" height="14" style="color:#6B7280">
+              <use href="#icon-chevron-down-sm" />
+            </svg></div>
         </div>
         <div class="full-example-body">
           <div class="client-label">Client</div>
@@ -3535,7 +3714,9 @@
             <div class="toggle-label">Full Example &#8212; Existing Provider</div>
             <div class="toggle-sub">See a complete response using all five steps</div>
           </div>
-          <div class="toggle-chevron"><svg width="14" height="14" style="color:#6B7280"><use href="#icon-chevron-down-sm"/></svg></div>
+          <div class="toggle-chevron"><svg width="14" height="14" style="color:#6B7280">
+              <use href="#icon-chevron-down-sm" />
+            </svg></div>
         </div>
         <div class="full-example-body">
           <div class="client-label">Client</div>
@@ -3573,7 +3754,9 @@
         <div class="lang-group open">
           <div class="lang-group-header" onclick="toggleLangGroup(this)">
             <div><span class="lang-group-title">Acknowledging</span><span class="lang-group-count">5 phrases</span>
-            </div><svg class="lang-chevron" width="16" height="16" style="color:#6B7280"><use href="#icon-chevron-down"/></svg>
+            </div><svg class="lang-chevron" width="16" height="16" style="color:#6B7280">
+              <use href="#icon-chevron-down" />
+            </svg>
           </div>
           <div class="lang-group-body">
             <div class="lang-phrase-list">
@@ -3588,7 +3771,9 @@
         <div class="lang-group">
           <div class="lang-group-header" onclick="toggleLangGroup(this)">
             <div><span class="lang-group-title">Clarifying</span><span class="lang-group-count">5 phrases</span></div>
-            <svg class="lang-chevron" width="16" height="16" style="color:#6B7280"><use href="#icon-chevron-down"/></svg>
+            <svg class="lang-chevron" width="16" height="16" style="color:#6B7280">
+              <use href="#icon-chevron-down" />
+            </svg>
           </div>
           <div class="lang-group-body">
             <div class="lang-phrase-list">
@@ -3603,7 +3788,9 @@
         <div class="lang-group">
           <div class="lang-group-header" onclick="toggleLangGroup(this)">
             <div><span class="lang-group-title">Reframing</span><span class="lang-group-count">5 phrases</span></div>
-            <svg class="lang-chevron" width="16" height="16" style="color:#6B7280"><use href="#icon-chevron-down"/></svg>
+            <svg class="lang-chevron" width="16" height="16" style="color:#6B7280">
+              <use href="#icon-chevron-down" />
+            </svg>
           </div>
           <div class="lang-group-body">
             <div class="lang-phrase-list">
@@ -3618,7 +3805,9 @@
         <div class="lang-group">
           <div class="lang-group-header" onclick="toggleLangGroup(this)">
             <div><span class="lang-group-title">Responding with Value</span><span class="lang-group-count">5
-                phrases</span></div><svg class="lang-chevron" width="16" height="16" style="color:#6B7280"><use href="#icon-chevron-down"/></svg>
+                phrases</span></div><svg class="lang-chevron" width="16" height="16" style="color:#6B7280">
+              <use href="#icon-chevron-down" />
+            </svg>
           </div>
           <div class="lang-group-body">
             <div class="lang-phrase-list">
@@ -3633,7 +3822,9 @@
         <div class="lang-group">
           <div class="lang-group-header" onclick="toggleLangGroup(this)">
             <div><span class="lang-group-title">Holding Position Politely</span><span class="lang-group-count">4
-                phrases</span></div><svg class="lang-chevron" width="16" height="16" style="color:#6B7280"><use href="#icon-chevron-down"/></svg>
+                phrases</span></div><svg class="lang-chevron" width="16" height="16" style="color:#6B7280">
+              <use href="#icon-chevron-down" />
+            </svg>
           </div>
           <div class="lang-group-body">
             <div class="lang-phrase-list">
@@ -3651,7 +3842,9 @@
         <div class="lang-group">
           <div class="lang-group-header" onclick="toggleLangGroup(this)">
             <div><span class="lang-group-title">Moving Forward</span><span class="lang-group-count">5 phrases</span>
-            </div><svg class="lang-chevron" width="16" height="16" style="color:#6B7280"><use href="#icon-chevron-down"/></svg>
+            </div><svg class="lang-chevron" width="16" height="16" style="color:#6B7280">
+              <use href="#icon-chevron-down" />
+            </svg>
           </div>
           <div class="lang-group-body">
             <div class="lang-phrase-list">
@@ -3914,7 +4107,8 @@
           challenge. Respond using either the current skill or the full framework.</p>
         <div class="challenge-example">
           <p><strong>Objection:</strong> &#8220;It&#8217;s too expensive.&#8221;</p>
-          <p><strong>Challenge:</strong> The client interrupts and says, &#8220;I don&#8217;t have time for a long explanation.&#8221;</p>
+          <p><strong>Challenge:</strong> The client interrupts and says, &#8220;I don&#8217;t have time for a long
+            explanation.&#8221;</p>
           <p class="task">Task: Respond calmly and keep it short.</p>
         </div>
       </div>
@@ -3972,12 +4166,24 @@
         <p style="font-size:13.5px;color:var(--muted);margin-bottom:14px">A strong response usually does at least three
           of these:</p>
         <div class="checklist">
-          <div class="checklist-item"><svg width="12" height="12" style="color:#2D8F87"><use href="#icon-check-sm"/></svg>acknowledges the concern</div>
-          <div class="checklist-item"><svg width="12" height="12" style="color:#2D8F87"><use href="#icon-check-sm"/></svg>asks a clarifying question</div>
-          <div class="checklist-item"><svg width="12" height="12" style="color:#2D8F87"><use href="#icon-check-sm"/></svg>avoids over-apologising</div>
-          <div class="checklist-item"><svg width="12" height="12" style="color:#2D8F87"><use href="#icon-check-sm"/></svg>explains value clearly</div>
-          <div class="checklist-item"><svg width="12" height="12" style="color:#2D8F87"><use href="#icon-check-sm"/></svg>stays calm under pushback</div>
-          <div class="checklist-item"><svg width="12" height="12" style="color:#2D8F87"><use href="#icon-check-sm"/></svg>suggests a next step</div>
+          <div class="checklist-item"><svg width="12" height="12" style="color:#2D8F87">
+              <use href="#icon-check-sm" />
+            </svg>acknowledges the concern</div>
+          <div class="checklist-item"><svg width="12" height="12" style="color:#2D8F87">
+              <use href="#icon-check-sm" />
+            </svg>asks a clarifying question</div>
+          <div class="checklist-item"><svg width="12" height="12" style="color:#2D8F87">
+              <use href="#icon-check-sm" />
+            </svg>avoids over-apologising</div>
+          <div class="checklist-item"><svg width="12" height="12" style="color:#2D8F87">
+              <use href="#icon-check-sm" />
+            </svg>explains value clearly</div>
+          <div class="checklist-item"><svg width="12" height="12" style="color:#2D8F87">
+              <use href="#icon-check-sm" />
+            </svg>stays calm under pushback</div>
+          <div class="checklist-item"><svg width="12" height="12" style="color:#2D8F87">
+              <use href="#icon-check-sm" />
+            </svg>suggests a next step</div>
         </div>
       </div>
       <div class="mini-example mt-16">
@@ -4013,22 +4219,34 @@
           <div class="section-label mb-8">What you can do now</div>
           <div class="can-do-list">
             <div class="can-do-item">
-              <div class="can-do-check"><svg width="11" height="11" style="color:#2D8F87"><use href="#icon-check-lg"/></svg></div>Slow the moment down before responding
+              <div class="can-do-check"><svg width="11" height="11" style="color:#2D8F87">
+                  <use href="#icon-check-lg" />
+                </svg></div>Slow the moment down before responding
             </div>
             <div class="can-do-item">
-              <div class="can-do-check"><svg width="11" height="11" style="color:#2D8F87"><use href="#icon-check-lg"/></svg></div>Acknowledge the concern without giving up your position
+              <div class="can-do-check"><svg width="11" height="11" style="color:#2D8F87">
+                  <use href="#icon-check-lg" />
+                </svg></div>Acknowledge the concern without giving up your position
             </div>
             <div class="can-do-item">
-              <div class="can-do-check"><svg width="11" height="11" style="color:#2D8F87"><use href="#icon-check-lg"/></svg></div>Clarify what the objection really means
+              <div class="can-do-check"><svg width="11" height="11" style="color:#2D8F87">
+                  <use href="#icon-check-lg" />
+                </svg></div>Clarify what the objection really means
             </div>
             <div class="can-do-item">
-              <div class="can-do-check"><svg width="11" height="11" style="color:#2D8F87"><use href="#icon-check-lg"/></svg></div>Reframe the conversation toward value or priority
+              <div class="can-do-check"><svg width="11" height="11" style="color:#2D8F87">
+                  <use href="#icon-check-lg" />
+                </svg></div>Reframe the conversation toward value or priority
             </div>
             <div class="can-do-item">
-              <div class="can-do-check"><svg width="11" height="11" style="color:#2D8F87"><use href="#icon-check-lg"/></svg></div>Respond without sounding defensive
+              <div class="can-do-check"><svg width="11" height="11" style="color:#2D8F87">
+                  <use href="#icon-check-lg" />
+                </svg></div>Respond without sounding defensive
             </div>
             <div class="can-do-item">
-              <div class="can-do-check"><svg width="11" height="11" style="color:#2D8F87"><use href="#icon-check-lg"/></svg></div>Move toward a clearer next step
+              <div class="can-do-check"><svg width="11" height="11" style="color:#2D8F87">
+                  <use href="#icon-check-lg" />
+                </svg></div>Move toward a clearer next step
             </div>
           </div>
         </div>
@@ -4072,68 +4290,83 @@
           <div class="section-label suggested-next-label">Suggested Next Modules</div>
 
           <div class="next-modules">
-            <a class="next-module-card" href="https://vagabondigital.github.io/discovery-call-foundations-module/" target="_blank" rel="noopener">
+            <a class="next-module-card" href="https://vagabondigital.github.io/discovery-call-foundations-module/"
+              target="_blank" rel="noopener">
               <div class="next-module-icon">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                  <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.6"/>
-                  <path d="M17 17l3.5 3.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
-                  <path d="M8 11h6M11 8v6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+                  <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.6" />
+                  <path d="M17 17l3.5 3.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+                  <path d="M8 11h6M11 8v6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
                 </svg>
               </div>
               <div class="next-module-content">
                 <div class="next-module-kicker">Next Path</div>
                 <div class="next-module-title">Discovery Call Foundations</div>
-                <div class="next-module-desc"><strong>Best for:</strong> asking better questions and guiding client conversations before the pitch.</div>
+                <div class="next-module-desc"><strong>Best for:</strong> asking better questions and guiding client
+                  conversations before the pitch.</div>
               </div>
               <div class="next-module-arrow">→</div>
             </a>
 
-            <a class="next-module-card" href="https://vagabondigital.github.io/explaining-value-clearly-module/" target="_blank" rel="noopener">
+            <a class="next-module-card" href="https://vagabondigital.github.io/explaining-value-clearly-module/"
+              target="_blank" rel="noopener">
               <div class="next-module-icon">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                  <path d="M12 3L20 9L12 21L4 9L12 3Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
-                  <path d="M4 9H20" stroke="currentColor" stroke-width="1.6"/>
-                  <path d="M9 9L12 21L15 9" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+                  <path d="M12 3L20 9L12 21L4 9L12 3Z" stroke="currentColor" stroke-width="1.6"
+                    stroke-linejoin="round" />
+                  <path d="M4 9H20" stroke="currentColor" stroke-width="1.6" />
+                  <path d="M9 9L12 21L15 9" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" />
                 </svg>
               </div>
               <div class="next-module-content">
                 <div class="next-module-kicker">Next Path</div>
                 <div class="next-module-title">Explaining Value Clearly</div>
-                <div class="next-module-desc"><strong>Best for:</strong> objections that happen because the client does not fully understand the value yet.</div>
+                <div class="next-module-desc"><strong>Best for:</strong> objections that happen because the client does
+                  not fully understand the value yet.</div>
               </div>
               <div class="next-module-arrow">→</div>
             </a>
 
-            <a class="next-module-card" href="https://vagabondigital.github.io/negotiation-and-difficult-conversations-module/" target="_blank" rel="noopener">
+            <a class="next-module-card"
+              href="https://vagabondigital.github.io/negotiation-and-difficult-conversations-module/" target="_blank"
+              rel="noopener">
               <div class="next-module-icon">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                  <path d="M7 8.5C7 6.6 8.6 5 10.5 5S14 6.6 14 8.5 12.4 12 10.5 12 7 10.4 7 8.5Z" stroke="currentColor" stroke-width="1.6"/>
-                  <path d="M14.5 10.5C16 10.5 17.2 9.3 17.2 7.8S16 5.1 14.5 5.1" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
-                  <path d="M4.5 19C5.2 16.6 7.4 15 10.5 15S15.8 16.6 16.5 19" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
-                  <path d="M16.5 15.2C18.2 15.7 19.4 17 19.8 19" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+                  <path d="M7 8.5C7 6.6 8.6 5 10.5 5S14 6.6 14 8.5 12.4 12 10.5 12 7 10.4 7 8.5Z" stroke="currentColor"
+                    stroke-width="1.6" />
+                  <path d="M14.5 10.5C16 10.5 17.2 9.3 17.2 7.8S16 5.1 14.5 5.1" stroke="currentColor"
+                    stroke-width="1.6" stroke-linecap="round" />
+                  <path d="M4.5 19C5.2 16.6 7.4 15 10.5 15S15.8 16.6 16.5 19" stroke="currentColor" stroke-width="1.6"
+                    stroke-linecap="round" />
+                  <path d="M16.5 15.2C18.2 15.7 19.4 17 19.8 19" stroke="currentColor" stroke-width="1.6"
+                    stroke-linecap="round" />
                 </svg>
               </div>
               <div class="next-module-content">
                 <div class="next-module-kicker">Next Path</div>
                 <div class="next-module-title">Negotiation and Difficult Conversations</div>
-                <div class="next-module-desc"><strong>Best for:</strong> pushback that turns into tension, disagreement, or difficult terms.</div>
+                <div class="next-module-desc"><strong>Best for:</strong> pushback that turns into tension, disagreement,
+                  or difficult terms.</div>
               </div>
               <div class="next-module-arrow">→</div>
             </a>
 
-            <a class="next-module-card" href="https://vagabondigital.github.io/follow-up-and-next-steps-module/" target="_blank" rel="noopener">
+            <a class="next-module-card" href="https://vagabondigital.github.io/follow-up-and-next-steps-module/"
+              target="_blank" rel="noopener">
               <div class="next-module-icon">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                  <path d="M5 6.5H19" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
-                  <path d="M5 12H15" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
-                  <path d="M5 17.5H12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
-                  <path d="M17 15L20 18L17 21" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M5 6.5H19" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+                  <path d="M5 12H15" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+                  <path d="M5 17.5H12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+                  <path d="M17 15L20 18L17 21" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"
+                    stroke-linejoin="round" />
                 </svg>
               </div>
               <div class="next-module-content">
                 <div class="next-module-kicker">Next Path</div>
                 <div class="next-module-title">Follow-Up and Next Steps</div>
-                <div class="next-module-desc"><strong>Best for:</strong> momentum that disappears after the call or after the objection.</div>
+                <div class="next-module-desc"><strong>Best for:</strong> momentum that disappears after the call or
+                  after the objection.</div>
               </div>
               <div class="next-module-arrow">→</div>
             </a>
@@ -4142,10 +4375,14 @@
       </div>
 
       <div class="completion-actions">
-        <button class="btn-teal" onclick="goToPage(18)">Bonus Round <svg width="15" height="15" style="color:white"><use href="#icon-arrow-right-bonus"/></svg></button>
+        <button class="btn-teal" onclick="goToPage(18)">Bonus Round <svg width="15" height="15" style="color:white">
+            <use href="#icon-arrow-right-bonus" />
+          </svg></button>
         <div style="font-size:12.5px;color:var(--muted)">Optional &#8212; one more round if useful</div>
         <button class="btn-back" style="border-color:var(--border)" onclick="jumpToQuickReference()">
-          <svg width="13" height="13"><use href="#icon-doc-plus"/></svg>
+          <svg width="13" height="13">
+            <use href="#icon-doc-plus" />
+          </svg>
           Quick Reference
         </button>
       </div>
@@ -4254,21 +4491,24 @@
           <div class="good-num">2</div>
           <div>
             <div class="good-title">Clarify</div>
-            <div class="good-phrase">&#8220;Can I clarify whether the concern is price, timing, or expected return?&#8221;</div>
+            <div class="good-phrase">&#8220;Can I clarify whether the concern is price, timing, or expected
+              return?&#8221;</div>
           </div>
         </div>
         <div class="good-item">
           <div class="good-num">3</div>
           <div>
             <div class="good-title">Reframe</div>
-            <div class="good-phrase">&#8220;The bigger question is whether this helps solve the problem you described.&#8221;</div>
+            <div class="good-phrase">&#8220;The bigger question is whether this helps solve the problem you
+              described.&#8221;</div>
           </div>
         </div>
         <div class="good-item">
           <div class="good-num">4</div>
           <div>
             <div class="good-title">Respond with Value</div>
-            <div class="good-phrase">&#8220;The value here is that it helps your team reduce delays and avoid manual follow-up.&#8221;</div>
+            <div class="good-phrase">&#8220;The value here is that it helps your team reduce delays and avoid manual
+              follow-up.&#8221;</div>
           </div>
         </div>
         <div class="good-item">
@@ -4287,20 +4527,25 @@
         <div class="client-label">Client</div>
         <div class="client-quote">&#8220;It&#8217;s too expensive.&#8221;</div>
         <div class="client-label mt-10">Response</div>
-        <div class="response-text">&#8220;I understand why the price would stand out. Can I clarify whether the concern is the total cost, or whether the value is not clear enough yet? The bigger question is whether this helps your team reduce the delays you mentioned. If it does, we can look at the best next step together.&#8221;</div>
+        <div class="response-text">&#8220;I understand why the price would stand out. Can I clarify whether the concern
+          is the total cost, or whether the value is not clear enough yet? The bigger question is whether this helps
+          your team reduce the delays you mentioned. If it does, we can look at the best next step together.&#8221;
+        </div>
       </div>
 
       <!-- Section 4: Use This When -->
       <div class="optional-q" style="margin-top:20px">
         <div class="optional-q-label">Use this when</div>
-        <div class="optional-q-text">Use this page before a client call, practice round, or follow-up conversation when you need a quick reminder.</div>
+        <div class="optional-q-text">Use this page before a client call, practice round, or follow-up conversation when
+          you need a quick reminder.</div>
       </div>
 
       <!-- Print button -->
       <div style="margin-top:24px;text-align:center">
         <button id="qr-print-btn" class="btn-teal" onclick="window.print()">
           <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
-            <path d="M4 5V2h7v3M4 10H2V6h11v4h-2M4 10v3h7v-3" stroke="white" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+            <path d="M4 5V2h7v3M4 10H2V6h11v4h-2M4 10v3h7v-3" stroke="white" stroke-width="1.4" stroke-linecap="round"
+              stroke-linejoin="round" fill="none" />
           </svg>
           Print / Save as PDF
         </button>
@@ -4365,8 +4610,8 @@
             Complete</span><span class="jump-link-desc">Review what the student can now do</span></button>
         <button class="jump-link" onclick="jumpTo(18)"><span class="jump-link-title">Bonus Round</span><span
             class="jump-link-desc">Optional extra practice</span></button>
-        <button class="jump-link" id="qr-jump-link" onclick="jumpToQuickReference()"><span class="jump-link-title">Quick Reference</span><span
-            class="jump-link-desc">Compact student takeaway</span></button>
+        <button class="jump-link" id="qr-jump-link" onclick="jumpToQuickReference()"><span class="jump-link-title">Quick
+            Reference</span><span class="jump-link-desc">Compact student takeaway</span></button>
       </div>
     </div>
   </div>
@@ -4381,7 +4626,10 @@
         </svg>
         Back
       </button>
-      <span class="page-indicator" id="pageIndicator">1 / 18</span>
+      <span class="page-indicator" id="pageIndicator">
+        <span class="page-count-desktop">Page 1 of 18</span>
+        <span class="page-count-mobile">1/18</span>
+      </span>
     </div>
     <div class="bottom-right">
       <button class="btn-jump" id="btnJump" onclick="toggleJump()">
@@ -4449,8 +4697,8 @@
     function updateBar(p) {
       const back = document.getElementById('btnBack');
       const cont = document.getElementById('btnContinue');
-      const ind  = document.getElementById('pageIndicator');
-      const bar  = document.getElementById('bottomBar');
+      const ind = document.getElementById('pageIndicator');
+      const bar = document.getElementById('bottomBar');
 
       // Hide entire bottom bar on page 1 (not on quick reference)
       if (p === 1 && !quickRefActive) {
@@ -4462,9 +4710,14 @@
 
       // Page indicator text
       if (quickRefActive) {
-        ind.textContent = 'Quick Reference';
+        ind.innerHTML =
+          '<span class="page-count-desktop">Quick Reference</span>' +
+          '<span class="page-count-mobile">Quick Ref</span>';
       } else {
-        ind.textContent = p + ' / ' + TOTAL;
+        ind.innerHTML =
+          '<span class="page-count-desktop">Page ' + p + ' of ' + TOTAL + '</span>' +
+          '<span class="page-count-mobile">' + p + '/' + TOTAL + '</span>' +
+          '<span class="page-title-desktop"> · ' + PAGE_TITLES[p] + '</span>';
       }
 
       // Continue button
@@ -4588,7 +4841,7 @@
 
     function togglePrompt(header) {
       const item = header.closest('.prompt-item');
-      const was  = item.classList.contains('open');
+      const was = item.classList.contains('open');
       document.querySelectorAll('.prompt-item').forEach(i => i.classList.remove('open'));
       if (!was) item.classList.add('open');
     }
