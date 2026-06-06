@@ -7,8 +7,8 @@
      Favicon:            matching shield/check (data URI in <head>)
      Total pages:        18  (TOTAL constant in JS)
      Landing page text:  "18 pages" (page 1 hero-body)
-     Section breaks:     Start=1, Framework=2-4, Skills=5-11,
-                         Practice=12-15, Complete=16-18  (getSec() in JS)
+     Section breaks:     Start=1-3, Framework=4-5, Skills=6-11,
+                         Practice=12-16, Complete=17-18  (getSec() in JS)
      Page titles:        PAGE_TITLES object in JS
      Framework:          Acknowledge → Clarify → Reframe →
                          Respond with Value → Move Forward
@@ -1409,6 +1409,15 @@
       color: var(--muted);
       font-style: italic;
       line-height: 1.45
+    }
+
+    .challenge-card .challenge-example {
+      display: none;
+      margin-top: 10px
+    }
+
+    .challenge-card.active .challenge-example {
+      display: block
     }
 
     /* ── QUICK RECAP ────────────────────────────────────── */
@@ -4276,14 +4285,17 @@
       </div>
     </div>
 
-    <!-- PAGE 15 ─ Objection Challenge Bank ───────────────────────── -->
+    <!-- PAGE 15 ─ OBJECTION CHALLENGE BANK ───────────────────────── -->
     <div class="page" id="page-15">
       <div class="page-eyebrow amber">Practice Upgrade</div>
       <h1 class="page-title">Objection Challenge Bank</h1>
-      <p class="page-subtitle">Once the response is clear, try the same task with one extra difficulty. Add one
-        challenge at a time.</p>
+      <p class="page-subtitle">Once the response structure is clear, try the same prompt with one extra difficulty. Add
+        one challenge at a time.</p>
+      <p class="tap-hint">Tap any card to expand it.</p>
+
       <div class="challenge-grid mt-8">
-        <div class="challenge-card" onclick="this.classList.toggle('active')">
+
+        <div class="challenge-card" onclick="toggleChallengeCard(this)">
           <div class="challenge-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none">
               <path d="M3 6a5 5 0 0 1 10 0c0 2-1 3.5-2.5 4.5V12H5.5v-1.5C4 9.5 3 8 3 6z" stroke="#C8843A"
                 stroke-width="1.3" fill="none" />
@@ -4292,8 +4304,12 @@
             </svg></div>
           <div class="challenge-title">Short Answers</div>
           <div class="challenge-quote">&#8220;Maybe. I&#8217;m not sure.&#8221;</div>
+          <div class="challenge-example">
+            <p class="task">Do not overtalk. Ask one focused clarification question and wait.</p>
+          </div>
         </div>
-        <div class="challenge-card" onclick="this.classList.toggle('active')">
+
+        <div class="challenge-card" onclick="toggleChallengeCard(this)">
           <div class="challenge-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none">
               <path
                 d="M6 8V4a1 1 0 0 1 2 0v4M6 8V6a1 1 0 0 0-2 0v3a5 5 0 0 0 5 5h1a4 4 0 0 0 4-4V8a1 1 0 0 0-2 0M6 8a1 1 0 0 1 2 0"
@@ -4301,8 +4317,12 @@
             </svg></div>
           <div class="challenge-title">Interruption</div>
           <div class="challenge-quote">&#8220;Yes, but that still sounds expensive.&#8221;</div>
+          <div class="challenge-example">
+            <p class="task">Acknowledge the interruption, answer briefly, then return to value.</p>
+          </div>
         </div>
-        <div class="challenge-card" onclick="this.classList.toggle('active')">
+
+        <div class="challenge-card" onclick="toggleChallengeCard(this)">
           <div class="challenge-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none">
               <circle cx="8" cy="9" r="5.5" stroke="#C8843A" stroke-width="1.3" />
               <path d="M8 6v3l2 1.5" stroke="#C8843A" stroke-width="1.3" stroke-linecap="round"
@@ -4311,8 +4331,12 @@
             </svg></div>
           <div class="challenge-title">Time Limit</div>
           <div class="challenge-quote">You only have 30 seconds to respond.</div>
+          <div class="challenge-example">
+            <p class="task">Use only three moves: acknowledge, clarify, suggest a next step.</p>
+          </div>
         </div>
-        <div class="challenge-card" onclick="this.classList.toggle('active')">
+
+        <div class="challenge-card" onclick="toggleChallengeCard(this)">
           <div class="challenge-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none">
               <circle cx="8" cy="8" r="5.5" stroke="#C8843A" stroke-width="1.3" />
               <path d="M6 6.5c0-1 .9-1.5 2-1.5s2 .7 2 1.5c0 1-1 1.5-2 2" stroke="#C8843A" stroke-width="1.3"
@@ -4321,8 +4345,12 @@
             </svg></div>
           <div class="challenge-title">Skeptical Tone</div>
           <div class="challenge-quote">&#8220;I&#8217;ve heard that before.&#8221;</div>
+          <div class="challenge-example">
+            <p class="task">Do not argue. Ask what would make the claim more credible or specific.</p>
+          </div>
         </div>
-        <div class="challenge-card" onclick="this.classList.toggle('active')">
+
+        <div class="challenge-card" onclick="toggleChallengeCard(this)">
           <div class="challenge-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none">
               <rect x="2" y="5" width="12" height="8" rx="1.5" stroke="#C8843A" stroke-width="1.3" />
               <path d="M5 5V4a3 3 0 0 1 6 0v1" stroke="#C8843A" stroke-width="1.3" />
@@ -4331,23 +4359,36 @@
           <div class="challenge-title">Price Too Early</div>
           <div class="challenge-quote">&#8220;How much does it cost?&#8221; &#8212; before understanding the value.
           </div>
+          <div class="challenge-example">
+            <p class="task">Answer professionally, but first clarify scope, need, or expected outcome.</p>
+          </div>
         </div>
-        <div class="challenge-card" onclick="this.classList.toggle('active')">
+
+        <div class="challenge-card" onclick="toggleChallengeCard(this)">
           <div class="challenge-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none">
               <path d="M8 3v10M4 8h8M5 5l6 6M11 5l-6 6" stroke="#C8843A" stroke-width="1.3" stroke-linecap="round" />
             </svg></div>
           <div class="challenge-title">Provider Comparison</div>
           <div class="challenge-quote">&#8220;Our current provider already does this.&#8221;</div>
+          <div class="challenge-example">
+            <p class="task">Do not attack the provider. Ask what works, what is missing, and where improvement matters.
+            </p>
+          </div>
         </div>
-        <div class="challenge-card" onclick="this.classList.toggle('active')">
+
+        <div class="challenge-card" onclick="toggleChallengeCard(this)">
           <div class="challenge-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none">
               <rect x="2.5" y="3.5" width="11" height="9" rx="1.5" stroke="#C8843A" stroke-width="1.3" />
               <path d="M5 7h6M5 9.5h4" stroke="#C8843A" stroke-width="1.3" stroke-linecap="round" />
             </svg></div>
           <div class="challenge-title">Dead Follow-Up Risk</div>
           <div class="challenge-quote">&#8220;Just send me something.&#8221;</div>
+          <div class="challenge-example">
+            <p class="task">Clarify what information would help, then attach a clear reason for the follow-up.</p>
+          </div>
         </div>
-        <div class="challenge-card" onclick="this.classList.toggle('active')">
+
+        <div class="challenge-card" onclick="toggleChallengeCard(this)">
           <div class="challenge-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none">
               <rect x="3" y="5" width="10" height="8" rx="1" stroke="#C8843A" stroke-width="1.3" />
               <path d="M6 5V4a2 2 0 0 1 4 0v1" stroke="#C8843A" stroke-width="1.3" />
@@ -4355,19 +4396,21 @@
             </svg></div>
           <div class="challenge-title">Decision Delay</div>
           <div class="challenge-quote">&#8220;Let me think about it and get back to you.&#8221;</div>
+          <div class="challenge-example">
+            <p class="task">Ask what they need to think through, then agree a specific next step or review point.</p>
+          </div>
         </div>
+
       </div>
+
       <div class="card mt-20">
         <div class="section-label mb-8">How to use these</div>
-        <p style="font-size:14px;color:var(--navy);line-height:1.65;margin-bottom:12px">Choose one objection and one
-          challenge. Respond using either the current skill or the full framework.</p>
-        <div class="challenge-example">
-          <p><strong>Objection:</strong> &#8220;It&#8217;s too expensive.&#8221;</p>
-          <p><strong>Challenge:</strong> The client interrupts and says, &#8220;I don&#8217;t have time for a long
-            explanation.&#8221;</p>
-          <p class="task">Task: Respond calmly and keep it short.</p>
-        </div>
+        <p style="font-size:14px;color:var(--muted);line-height:1.65">Choose one prompt from the Practice Prompts page
+          and one challenge from this page. Practise using one skill or the full framework. Add one challenge at a time.
+          The goal is not to sound perfect. The goal is to stay calm, clear, useful, and professional under client
+          pushback.</p>
       </div>
+
     </div>
 
     <!-- PAGE 16 ─ WHAT GOOD LOOKS LIKE ─────────────────────────── -->
@@ -4870,10 +4913,14 @@
             class="jump-link-desc">What this module builds</span></button>
         <button class="jump-link" onclick="jumpTo(3)"><span class="jump-link-title">Skill Path</span><span
             class="jump-link-desc">See the skill progression</span></button>
+      </div>
+
+      <div class="jump-section-label">Framework</div>
+      <div class="jump-links">
         <button class="jump-link" onclick="jumpTo(4)"><span class="jump-link-title">Core Framework</span><span
-            class="jump-link-desc">Learn the response structure</span></button>
+            class="jump-link-desc">Learn the objection response structure</span></button>
         <button class="jump-link" onclick="jumpTo(5)"><span class="jump-link-title">Pushback Map</span><span
-            class="jump-link-desc">Explore common objections</span></button>
+            class="jump-link-desc">Explore common objection types</span></button>
       </div>
       <div class="jump-section-label">Skills</div>
       <div class="jump-links">
@@ -4906,7 +4953,7 @@
         <button class="jump-link" onclick="jumpTo(16)"><span class="jump-link-title">What Good Looks Like</span><span
             class="jump-link-desc">Review strong performance</span></button>
       </div>
-      <div class="jump-section-label">Finish</div>
+      <div class="jump-section-label">Complete</div>
       <div class="jump-links">
         <button class="jump-link" onclick="jumpTo(17)"><span class="jump-link-title">Objection Handling
             Complete</span><span class="jump-link-desc">Review what the student can now do</span></button>
@@ -4977,10 +5024,10 @@
     let quickRefActive = false;
 
     function getSec(p) {
-      if (p <= 1) return 0;
-      if (p <= 4) return 1;
+      if (p <= 3) return 0;
+      if (p <= 5) return 1;
       if (p <= 11) return 2;
-      if (p <= 15) return 3;
+      if (p <= 16) return 3;
       return 4;
     }
 
@@ -5041,7 +5088,9 @@
       } else {
         document.querySelectorAll('.jump-link').forEach(function (el) {
           const fn = el.getAttribute('onclick');
-          if (fn && fn.includes('jumpTo(' + p + ')')) { el.classList.add('current'); }
+          if (fn && fn.trim() === 'jumpTo(' + p + ')') {
+            el.classList.add('current');
+          }
         });
       }
     }
@@ -5150,6 +5199,18 @@
 
     function toggleFullExample(toggle) {
       toggle.classList.toggle('open');
+    }
+
+    function toggleChallengeCard(card) {
+      const wasActive = card.classList.contains('active');
+
+      document.querySelectorAll('.challenge-card').forEach(function (c) {
+        c.classList.remove('active');
+      });
+
+      if (!wasActive) {
+        card.classList.add('active');
+      }
     }
 
     // Close jump panel on Escape
