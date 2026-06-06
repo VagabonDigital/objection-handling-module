@@ -1411,13 +1411,27 @@
       line-height: 1.45
     }
 
-    .challenge-card .challenge-example {
+    .challenge-detail {
       display: none;
-      margin-top: 10px
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px solid rgba(200, 132, 58, 0.22);
     }
 
-    .challenge-card.active .challenge-example {
-      display: block
+    .challenge-card.active .challenge-detail {
+      display: block;
+    }
+
+    .challenge-detail p {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.45;
+      margin: 0;
+    }
+
+    .challenge-detail .task {
+      color: var(--amber);
+      font-weight: 600;
     }
 
     /* ── QUICK RECAP ────────────────────────────────────── */
@@ -4304,7 +4318,7 @@
             </svg></div>
           <div class="challenge-title">Short Answers</div>
           <div class="challenge-quote">&#8220;Maybe. I&#8217;m not sure.&#8221;</div>
-          <div class="challenge-example">
+          <div class="challenge-detail">
             <p class="task">Do not overtalk. Ask one focused clarification question and wait.</p>
           </div>
         </div>
@@ -4317,7 +4331,7 @@
             </svg></div>
           <div class="challenge-title">Interruption</div>
           <div class="challenge-quote">&#8220;Yes, but that still sounds expensive.&#8221;</div>
-          <div class="challenge-example">
+          <div class="challenge-detail">
             <p class="task">Acknowledge the interruption, answer briefly, then return to value.</p>
           </div>
         </div>
@@ -4331,7 +4345,7 @@
             </svg></div>
           <div class="challenge-title">Time Limit</div>
           <div class="challenge-quote">You only have 30 seconds to respond.</div>
-          <div class="challenge-example">
+          <div class="challenge-detail">
             <p class="task">Use only three moves: acknowledge, clarify, suggest a next step.</p>
           </div>
         </div>
@@ -4345,7 +4359,7 @@
             </svg></div>
           <div class="challenge-title">Skeptical Tone</div>
           <div class="challenge-quote">&#8220;I&#8217;ve heard that before.&#8221;</div>
-          <div class="challenge-example">
+          <div class="challenge-detail">
             <p class="task">Do not argue. Ask what would make the claim more credible or specific.</p>
           </div>
         </div>
@@ -4359,7 +4373,7 @@
           <div class="challenge-title">Price Too Early</div>
           <div class="challenge-quote">&#8220;How much does it cost?&#8221; &#8212; before understanding the value.
           </div>
-          <div class="challenge-example">
+          <div class="challenge-detail">
             <p class="task">Answer professionally, but first clarify scope, need, or expected outcome.</p>
           </div>
         </div>
@@ -4370,7 +4384,7 @@
             </svg></div>
           <div class="challenge-title">Provider Comparison</div>
           <div class="challenge-quote">&#8220;Our current provider already does this.&#8221;</div>
-          <div class="challenge-example">
+          <div class="challenge-detail">
             <p class="task">Do not attack the provider. Ask what works, what is missing, and where improvement matters.
             </p>
           </div>
@@ -4383,7 +4397,7 @@
             </svg></div>
           <div class="challenge-title">Dead Follow-Up Risk</div>
           <div class="challenge-quote">&#8220;Just send me something.&#8221;</div>
-          <div class="challenge-example">
+          <div class="challenge-detail">
             <p class="task">Clarify what information would help, then attach a clear reason for the follow-up.</p>
           </div>
         </div>
@@ -4396,7 +4410,7 @@
             </svg></div>
           <div class="challenge-title">Decision Delay</div>
           <div class="challenge-quote">&#8220;Let me think about it and get back to you.&#8221;</div>
-          <div class="challenge-example">
+          <div class="challenge-detail">
             <p class="task">Ask what they need to think through, then agree a specific next step or review point.</p>
           </div>
         </div>
